@@ -1,3 +1,3 @@
 from django.db import models
 
-# Create your models here.
+# each class = table, each attribute = field in table
