@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'hb2qyn7be9-jqu4*i5*&-f-@#d^mra%n1o$m#4=_qk_0c(f2#t'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True  # TURN THIS OFF BEFORE PUSHING TO GIT!!!!!!
 
 
 ALLOWED_HOSTS = ["meetup-sjsu.herokuapp.com"]
