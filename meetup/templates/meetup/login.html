@@ -1,0 +1,19 @@
+
+
+{% block content %}
+<h3>Log In</h3>
+    <form method="POST" action="">
+        {% csrf_token %} <!-- token required for forms in Django -->
+        {{form.username.label}}
+        {{form.username}}
+
+        {{form.password.label}}
+        {{form.password}}
+
+
+        <input type="submit" name="Create User">
+    </form>
+
+        </div>
+
+{% endblock content %}

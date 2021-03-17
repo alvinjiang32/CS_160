@@ -1,0 +1,12 @@
+{% extends "meetup/base.html" %}
+{% block content %}
+
+    <h3>Credit Card Form</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form}}
+            <input type="submit">
+
+        </form>
+
+{% endblock content %}
