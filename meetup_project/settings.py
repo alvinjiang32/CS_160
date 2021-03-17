@@ -34,6 +34,7 @@ ALLOWED_HOSTS = ["meetup-sjsu.herokuapp.com"]
 
 INSTALLED_APPS = [
     'meetup.apps.MeetupConfig',
+    'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -123,6 +124,7 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # Activate Django-Heroku
 import django_heroku
