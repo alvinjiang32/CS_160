@@ -1,8 +1,9 @@
-from django.contrib import messages
-from django.contrib.auth.models import User, Group
+from .forms import *
 from django.shortcuts import render, redirect
-from .forms import UserRegisterForm
-from .models import Wallet
+from django.contrib import messages
+from .models import *
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 
 
 def home(request):
@@ -36,7 +37,53 @@ def register(request):
 
             username = form.cleaned_data.get('username')
             messages.success(request, f"Hey {username}, welcome to MeetUp!")
-            return redirect("meetup-home")  # REDIRECT TO LOGIN
+            return redirect("meetup-login")
     else:  # If form not submitted just show form for user to fill out
         form = UserRegisterForm()
     return render(request, 'meetup/register.html', {'form': form})
+
+
+def login_user(request):
+    form = LoginForm()
+    if request.user.is_authenticated:
+        return redirect('meetup-home')
+    else:
+        if request.method == 'POST':
+            form = LoginForm(request.POST)
+            username = request.POST.get('username')
+            password = request.POST.get('password')
+
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                messages.success(request,
+                                 f"You are now logged in. Welcome, "
+                                 f"{username}!")
+                return redirect('meetup-home')
+            else:
+                messages.warning(request, 'Username OR password is incorrect')
+
+        context = {'form': form}
+        return render(request, "meetup/login.html", context)
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('meetup-home')
+
+
+@login_required(login_url='meetup-login')
+def creditcard(request):
+    form = CreditCardForm()
+
+    if request.method == 'POST':
+        form = CreditCardForm(request.POST)
+        if form.is_valid():
+            card = form.save(commit=False)
+            card.user = request.user
+            card.save()
+            messages.success(request, "Credit card added!")
+            return redirect('meetup-creditcard')
+
+    context = {'form': form}
+    return render(request, "meetup/creditcard.html", context)
