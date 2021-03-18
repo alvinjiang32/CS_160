@@ -1,0 +1,18 @@
+{% extends 'meetup/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <form method="POST">
+            {% csrf_token %} <!-- token required for forms in Django -->
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4">What Kind of Account?</legend>
+
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                 <a href="{% url 'meetup-register' %}" button class="btn btn-outline-info" type="submit">Organizer</a>
+                     <a href="{% url 'meetup-login' %}" button class="btn btn-outline-info" type="submit">Citizen</a>
+            </div>
+        </form>
+    </div>
+{% endblock content %}
