@@ -5,7 +5,11 @@
         <form method="POST">
             {% csrf_token %} <!-- token required for forms in Django -->
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                {% if form.last_name %} <!-- Citizen Form -->
+                    <legend class="border-bottom mb-4">Create An Citizen Account</legend>
+                {% else %} <!-- Organizer Form -->
+                    <legend class="border-bottom mb-4">Create An Organizer Account</legend>
+                {% endif %}
                 <small><p style="text-align:left;">* = required field</p></small>
                 {{ form|crispy }}
             </fieldset>

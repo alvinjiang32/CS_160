@@ -43,6 +43,44 @@ def register(request):
     return render(request, 'meetup/register.html', {'form': form})
 
 
+def citizen_register(request):
+    if request.method == 'POST':  # If form was filled out and submitted
+        form = CitizenRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()  # Creates User
+            name = form.cleaned_data.get('username')
+            user = User.objects.filter(username=name).first()
+            user.groups.add(citizen_group)  # Assigns User to Citizen group
+            wallet = Wallet(user=user)  # Creates Wallet for User
+            wallet.save()
+
+            username = form.cleaned_data.get('username')
+            messages.success(request, f"Hey {username}, welcome to MeetUp!")
+            return redirect("meetup-login")
+    else:  # If form not submitted just show form for user to fill out
+        form = CitizenRegisterForm()
+    return render(request, 'meetup/register.html', {'form': form})
+
+
+def organizer_register(request):
+    if request.method == 'POST':  # If form was filled out and submitted
+        form = OrganizerRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()  # Creates User
+            name = form.cleaned_data.get('username')
+            user = User.objects.filter(username=name).first()
+            user.groups.add(organizer_group)  # Assigns User to Organizer group
+            wallet = Wallet(user=user)  # Creates Wallet for User
+            wallet.save()
+
+            username = form.cleaned_data.get('username')
+            messages.success(request, f"Hey {username}, welcome to MeetUp!")
+            return redirect("meetup-login")
+    else:  # If form not submitted just show form for user to fill out
+        form = OrganizerRegisterForm()
+    return render(request, 'meetup/register.html', {'form': form})
+
+
 def login_user(request):
     form = LoginForm()
     if request.user.is_authenticated:
