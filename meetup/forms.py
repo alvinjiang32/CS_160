@@ -1,24 +1,35 @@
-from django.db import models
+from django import forms
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
-from django.dispatch import receiver
-from django.forms import forms, ModelForm
-from .models import CreditCard
 from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
+from .models import CreditCard
 
 
-class PaymentForm(ModelForm):
-    class Meta:
-        model = CreditCard
-        fields = '__all__'
+class UserRegisterForm(UserCreationForm):
+    email = forms.EmailField()
+    groups = forms.CharField(label='Type of Account', widget=forms.Select(
+        choices=[('Citizen', 'Citizen'), ('Organizer', 'Organizer')]))
 
-class CreateUserForm(UserCreationForm):
     class Meta:
         model = User
-        fields = ['username', 'email', 'password1', 'password2']
+        fields = ['username', 'email', 'password1', 'password2', 'groups']
 
 
-class LogUserInForm(UserCreationForm):
+class LoginForm(UserCreationForm):
+    password = forms.CharField(widget=forms.PasswordInput())
+
     class Meta:
         model = User
         fields = ['username', 'password']
+
+
+class CreditCardForm(ModelForm):
+    expiry_date = forms.DateField(label='Expiry Date',
+                                  widget=forms.TextInput(attrs={'placeholder':
+                                                                'MM/DD/YYYY'}))
+
+    class Meta:
+        model = CreditCard
+        exclude = ("user",)
+        fields = ['name', 'credit_card_number', 'expiry_date',
+                  'cvc_code']

@@ -1,5 +1,7 @@
 # CS_160
 
+Website: https://meetup-160.herokuapp.com
+
 Project Instructions: https://docs.google.com/document/d/0xxUidB7p6oGkVz05xtH0s3I2J_DZoju805a4BCR3Z-I/edit
 
 The aim of the project is to develop an online platform of a recreation system for a smart city, which will help citizens choose various activities for them or their children. Their choice will be made based on various criteria, such as age (for example preschool, 10-12, adults, seniors), type of activity (for example sports, arts), proximity to the venue (for example at a distance of up to 5 miles), its cost, dates and time, etc.

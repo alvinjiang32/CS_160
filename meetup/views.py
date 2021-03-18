@@ -1,7 +1,6 @@
+from .forms import *
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from django.contrib.auth.forms import UserCreationForm
-from .forms import PaymentForm, CreateUserForm, LogUserInForm
 from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -15,60 +14,76 @@ def about(request):
     return render(request, "meetup/about.html", {"title": "About"})
 
 
-def login(request):
-    form = LogUserInForm()
+citizen_group, created = Group.objects.get_or_create(name='Citizen')
+organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
+
+
+def register(request):
+    if request.method == 'POST':  # If form was filled out and submitted
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()  # Creates User
+
+            name = form.cleaned_data.get('username')
+            group = form.cleaned_data.get('groups')
+            user = User.objects.filter(username=name).first()
+            if group == "Citizen":  # Assigns group to User's groups field
+                user.groups.add(citizen_group)
+            else:
+                user.groups.add(organizer_group)
+
+            wallet = Wallet(user=user)  # Creates Wallet for User
+            wallet.save()
+
+            username = form.cleaned_data.get('username')
+            messages.success(request, f"Hey {username}, welcome to MeetUp!")
+            return redirect("meetup-login")
+    else:  # If form not submitted just show form for user to fill out
+        form = UserRegisterForm()
+    return render(request, 'meetup/register.html', {'form': form})
+
+
+def login_user(request):
+    form = LoginForm()
     if request.user.is_authenticated:
         return redirect('meetup-home')
     else:
         if request.method == 'POST':
-            form = LogUserInForm(request.POST)
+            form = LoginForm(request.POST)
             username = request.POST.get('username')
             password = request.POST.get('password')
 
-            user = authenticate(request, username =username, password=password)
-            if user is not None:
-                login(request, username)
+            user = authenticate(request, username=username, password=password)
+            if user:
+                login(request, user)
+                messages.success(request,
+                                 f"You are now logged in. Welcome, "
+                                 f"{username}!")
                 return redirect('meetup-home')
             else:
-                messages.info(request, 'Username OR password is incorrect')
+                messages.warning(request, 'Username OR password is incorrect')
 
         context = {'form': form}
         return render(request, "meetup/login.html", context)
 
-def logoutUser(request):
+
+def logout_user(request):
     logout(request)
-    return redirect('meetup-login')
+    return redirect('meetup-home')
 
-#@login_required(login_url='meetup-login')
+
+@login_required(login_url='meetup-login')
 def creditcard(request):
-
-    formx = PaymentForm()
+    form = CreditCardForm()
 
     if request.method == 'POST':
-        formx = PaymentForm(request.POST)
-        if formx.is_valid():
-            formx.save()
+        form = CreditCardForm(request.POST)
+        if form.is_valid():
+            card = form.save(commit=False)
+            card.user = request.user
+            card.save()
+            messages.success(request, "Credit card added!")
+            return redirect('meetup-creditcard')
 
-
-
-    context = {'form':formx}
+    context = {'form': form}
     return render(request, "meetup/creditcard.html", context)
-
-
-def register(request):
-    if request.user.is_authenticated:
-        return redirect('meetup-home')
-    else:
-        form = CreateUserForm()
-        if request.method == 'POST':
-            form = CreateUserForm(request.POST)
-            if form.is_valid():
-                form.save()
-                user = form.cleaned_data.get('username')
-                messages.success((request, 'Account was created for' + user))
-                return redirect('meetup-login')
-
-        context = {'form': form}
-        return render(request, 'meetup/register.html', context)
-
-

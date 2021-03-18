@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import CreditCard, Wallet, Event
 
-# Register your models here.
+admin.site.register(CreditCard)
+admin.site.register(Wallet)
+admin.site.register(Event)

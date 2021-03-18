@@ -1,14 +1,12 @@
-from django.urls import path
 from . import views
-from django.contrib import admin
-from django.urls import path, include
+from django.urls import path
 
 
 urlpatterns = [
     path('', views.home, name='meetup-home'),
     path('about/', views.about, name='meetup-about'),
-    path('login/', views.login, name="meetup-login"),
-    path('register/', views.register,name='meetup-register'),
+    path('register/', views.register, name='meetup-register'),
+    path('login/', views.login_user, name="meetup-login"),
     path('creditcard/', views.creditcard, name='meetup-creditcard'),
-    path('logout/', views.logoutUser, name='meetup-logout'),
+    path('logout/', views.logout_user, name='meetup-logout'),
 ]
