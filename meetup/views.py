@@ -89,3 +89,7 @@ def creditcard(request):
 
     context = {'form': form}
     return render(request, "meetup/creditcard.html", context)
+
+
+def event_form(request):
+    return render(request, "meetup/event_form.html", { "title": "Event_Form"})

@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import ModelForm
-from .models import CreditCard
+from .models import CreditCard, Event
 
 
 class UserRegisterForm(UserCreationForm):
@@ -30,6 +30,16 @@ class CreditCardForm(ModelForm):
 
     class Meta:
         model = CreditCard
-        exclude = ("user",)
+        
         fields = ['name', 'credit_card_number', 'expiry_date',
                   'cvc_code']
+
+class EventForm(ModelForm):
+
+    class Meta:
+        model = Event
+        
+        fields = ['user', 'name', 'location', 'date', 'price', 
+                 'max_age', 'min_age', 'capacity', 'activity_type',
+                 'description', 'contact_info', 'attendees']
+    
