@@ -17,6 +17,8 @@ def about(request):
 citizen_group, created = Group.objects.get_or_create(name='Citizen')
 organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
 
+def register_initial(request):
+    return render(request, "meetup/register_initial.html", {"title": "Register Initial"})
 
 def register(request):
     if request.method == 'POST':  # If form was filled out and submitted

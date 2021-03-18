@@ -9,4 +9,5 @@ urlpatterns = [
     path('login/', views.login_user, name="meetup-login"),
     path('creditcard/', views.creditcard, name='meetup-creditcard'),
     path('logout/', views.logout_user, name='meetup-logout'),
+    path('register_initial/', views.register_initial, name='meetup-register_initial'),
 ]
