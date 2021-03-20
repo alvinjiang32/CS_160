@@ -17,32 +17,71 @@ def about(request):
 citizen_group, created = Group.objects.get_or_create(name='Citizen')
 organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
 
-def register_initial(request):
-    return render(request, "meetup/register_initial.html", {"title": "Register Initial"})
 
-def register(request):
+def register_initial(request):
+    return render(request, "meetup/register_initial.html",
+                  {"title": "Register"})
+
+
+def register_citizen(request):
     if request.method == 'POST':  # If form was filled out and submitted
-        form = UserRegisterForm(request.POST)
+        form = RegisterCitizenForm(request.POST)
         if form.is_valid():
             form.save()  # Creates User
-
             name = form.cleaned_data.get('username')
-            group = form.cleaned_data.get('groups')
             user = User.objects.filter(username=name).first()
-            if group == "Citizen":  # Assigns group to User's groups field
-                user.groups.add(citizen_group)
-            else:
-                user.groups.add(organizer_group)
-
-            wallet = Wallet(user=user)  # Creates Wallet for User
-            wallet.save()
+            user.groups.add(citizen_group)  # Assigns User to Citizen group
+            user_wallet = Wallet(user=user)  # Creates Wallet for User
+            user_wallet.save()
 
             username = form.cleaned_data.get('username')
             messages.success(request, f"Hey {username}, welcome to MeetUp!")
             return redirect("meetup-login")
     else:  # If form not submitted just show form for user to fill out
-        form = UserRegisterForm()
-    return render(request, 'meetup/register.html', {'form': form})
+        form = RegisterCitizenForm()
+    return render(request, 'meetup/register.html', {'form': form,
+                                                    "title": "Register"})
+
+
+def register_organizer(request):
+    if request.method == 'POST':
+        form = RegisterOrganizerForm(request.POST)
+        if form.is_valid():
+            form.save()  # Creates User
+            name = form.cleaned_data.get('username')
+            user = User.objects.filter(username=name).first()
+            user.groups.add(organizer_group)
+            user_wallet = Wallet(user=user)
+            user_wallet.save()
+
+            username = form.cleaned_data.get('username')
+            messages.success(request, f"Hey {username}, welcome to MeetUp!")
+            return redirect("meetup-login")
+    else:
+        form = RegisterOrganizerForm()
+    return render(request, 'meetup/register.html', {'form': form,
+                                                    "title": "Register"})
+
+
+def register_admin(request):
+    if request.method == 'POST':
+        form = RegisterAdminForm(request.POST)
+        if form.is_valid():
+            form.save()
+            name = form.cleaned_data.get('username')
+            user = User.objects.filter(username=name).first()
+            user.is_staff = True
+            user.is_superuser = True
+            user.groups.add(citizen_group)
+            user.groups.add(organizer_group)
+            user.save()  # For saving staff and superuser status
+            user_wallet = Wallet(user=user)
+            user_wallet.save()
+            return redirect("admin:index")
+    else:
+        form = RegisterAdminForm()
+    return render(request, 'meetup/register.html', {'form': form,
+                                                    "title": "Register Admin"})
 
 
 def login_user(request):
@@ -65,7 +104,7 @@ def login_user(request):
             else:
                 messages.warning(request, 'Username OR password is incorrect')
 
-        context = {'form': form}
+        context = {'form': form, 'title': "Login"}
         return render(request, "meetup/login.html", context)
 
 
@@ -87,9 +126,10 @@ def creditcard(request):
             messages.success(request, "Credit card added!")
             return redirect('meetup-creditcard')
 
-    context = {'form': form}
+    context = {'form': form, 'title': "Add Credit Card"}
     return render(request, "meetup/creditcard.html", context)
 
+  
 # @login_required(login_url='meetup-login')
 def event_form(request):
     form = EventForm()
@@ -110,3 +150,30 @@ def event_form(request):
     context = {'form': form}
 
     return render(request, "meetup/event_form.html", context)
+
+
+@login_required(login_url='meetup-login')
+def wallet(request):
+    user_wallet = Wallet.objects.get(user=request.user)
+    context = {'username': request.user.username,
+               'robucks': user_wallet.balance}
+    return render(request, "meetup/wallet.html", context)
+
+
+@login_required(login_url='meetup-login')
+def payment(request):
+    form = PaymentForm(user=request.user, initial={'amount': 0})
+
+    if request.method == 'POST':
+        form = PaymentForm(request.POST, user=request.user)
+        if form.is_valid():
+            user_wallet = Wallet.objects.get(user=request.user)
+            amount = form.cleaned_data.get('amount')
+            user_wallet.balance += amount
+            user_wallet.save(update_fields=['balance'])
+            messages.success(request, f"{amount} Robucks added to wallet!")
+            return redirect('meetup-wallet')
+
+    context = {'form': form, "title": "Pay"}
+    return render(request, "meetup/payment.html", context)
+

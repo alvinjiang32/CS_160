@@ -1,0 +1,13 @@
+{% extends 'meetup/base.html' %}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="content-section">
+    <h1>{{ username }}'s Wallet</h1>
+    <br>
+    <h2> Robucks: {{ robucks }} </h2>
+    <br>
+    <div class="text-center">
+        <a href="{% url 'meetup-payment' %}"><button class="btn btn-success" type="submit">Add Robucks</button></a>
+    </div>
+</div>
+{% endblock content %}

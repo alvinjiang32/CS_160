@@ -5,7 +5,11 @@
         <form method="POST">
             {% csrf_token %} <!-- token required for forms in Django -->
             <fieldset class="form-group">
-                <legend class="border-bottom mb-4">Join Today</legend>
+                {% if form.last_name %} <!-- Citizen Form -->
+                    <legend class="border-bottom mb-4">Create An Citizen Account</legend>
+                {% else %} <!-- Organizer Form -->
+                    <legend class="border-bottom mb-4">Create An Organizer Account</legend>
+                {% endif %}
                 <small><p style="text-align:left;">* = required field</p></small>
                 {{ form|crispy }}
             </fieldset>
@@ -15,7 +19,11 @@
         </form>
         <div class="border-top pt-3">
             <small class="text-muted">
-                Already Have An Account? <a class="ml-2" href="{% url 'meetup-login' %}">Sign In</a>
+                {% if form.first_name %}
+                    Already Have An Account? <a class="ml-2" href="{% url 'meetup-login' %}">Sign In</a>
+                {% else %}
+                    Already An Admin? <a class="ml-2" href="{% url 'admin:index' %}">Sign In</a>
+                {% endif %}
             </small>
         </div>
     </div>
