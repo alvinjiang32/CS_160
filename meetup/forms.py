@@ -35,6 +35,11 @@ class CreditCardForm(ModelForm):
                   'cvc_code']
 
 class EventForm(ModelForm):
+    date = forms.DateField(label='Date',
+                                  widget=forms.TextInput(attrs={'placeholder':
+                                                                'MM/DD/YYYY'}))
+    name = forms.CharField(label='Event Name')
+    attendees = forms.CharField()
 
     class Meta:
         model = Event
