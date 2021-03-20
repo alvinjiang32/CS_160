@@ -129,6 +129,28 @@ def creditcard(request):
     context = {'form': form, 'title': "Add Credit Card"}
     return render(request, "meetup/creditcard.html", context)
 
+  
+# @login_required(login_url='meetup-login')
+def event_form(request):
+    form = EventForm()
+
+    if request.method == 'POST':
+        form = EventForm(request.POST)
+        if form.is_valid():
+            form.save()  # Save form
+
+            name = form.cleaned_data.get('name')
+
+            user = User.objects.filter(username=name).first()
+
+            username = form.cleaned_data.get('name')
+            messages.success(request, f"Event: {name} Successfully Created!")
+            return redirect("meetup-event_form")
+        
+    context = {'form': form}
+
+    return render(request, "meetup/event_form.html", context)
+
 
 @login_required(login_url='meetup-login')
 def wallet(request):
@@ -154,3 +176,4 @@ def payment(request):
 
     context = {'form': form, "title": "Pay"}
     return render(request, "meetup/payment.html", context)
+
