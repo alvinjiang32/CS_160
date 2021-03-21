@@ -1,5 +1,4 @@
 /* Front End guys add CSS here!!!! */
-
 h1, h2, p, img {
     text-align: center;
 }
@@ -25,6 +24,14 @@ nav li a {
 
 nav li a:hover {
   background-color: #111;
+}
+
+/* For rendering Google Maps */
+#map {
+  height: 400px;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Chrome, Safari, Edge, Opera */

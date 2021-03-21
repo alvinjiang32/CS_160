@@ -12,7 +12,10 @@
     <!-- Our CSS -->
     <link rel="stylesheet" type="text/css"
           href="{% static 'meetup/main.css' %}">
-
+		  
+	<!-- Block for any scripts utilized by inheriting templates -->
+	{% block header_scripts %}{% endblock %}
+	
     {% if title %}
     <title>Meetup! - {{ title }}</title>
     {% else %}
@@ -24,7 +27,7 @@
         <li><a href="{% url 'meetup-home' %}">Home</a></li>
         <li><a href="{% url 'meetup-about' %}">About</a></li>
         <li><a href="{% url 'meetup-event_form' %}">Event Form</a></li>
-        <li><a href="#">Explore Events</a></li>
+        <li><a href="{% url 'meetup-explore_events' %}">Explore Events</a></li>
         
 
         <h2 style="color:white; font-family:'Garamond'; text-align:center; display: inline-block">MeetUp!</h2>
@@ -51,6 +54,9 @@
     {% endfor %}
 {% endif %}
 {% block content %}{% endblock %}
+
+<!-- Block for any scripts to be included after content elements -->
+{% block footer_scripts %}{% endblock %}
 
 <!-- JavaScript for Bootstrap -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

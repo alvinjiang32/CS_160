@@ -14,6 +14,10 @@ def about(request):
     return render(request, "meetup/about.html", {"title": "About"})
 
 
+def explore_event(request):
+    return render(request, "meetup/explore_events.html", {"title": "Explore Events"})
+
+
 citizen_group, created = Group.objects.get_or_create(name='Citizen')
 organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
 
