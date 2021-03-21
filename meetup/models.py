@@ -24,7 +24,9 @@ class CreditCard(models.Model):
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 primary_key=True)
-    balance = models.IntegerField(default=0)
+    balance = models.IntegerField(default=0, validators=[
+        MinValueValidator(0),
+        MaxValueValidator(1000)])
 
     def __str__(self):
         return f"{self.user}'s Wallet"
