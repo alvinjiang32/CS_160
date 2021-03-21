@@ -9,7 +9,7 @@ from django.contrib.auth.models import User, Group
 
 class CreditCard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    credit_card_number = models.PositiveIntegerField(validators=[
+    credit_card_number = models.PositiveBigIntegerField(validators=[
         MinValueValidator(1000000000000000),
         MaxValueValidator(9999999999999999)])
     expiry_date = models.DateField()
