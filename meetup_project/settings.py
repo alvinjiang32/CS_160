@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
+import dj_database_url
 from pathlib import Path
 
 
@@ -27,7 +28,7 @@ SECRET_KEY = 'hb2qyn7be9-jqu4*i5*&-f-@#d^mra%n1o$m#4=_qk_0c(f2#t'
 DEBUG = True  # TURN THIS OFF BEFORE PUSHING TO GIT!!!!!!
 
 
-ALLOWED_HOSTS = ["meetup-sjsu.herokuapp.com"]
+ALLOWED_HOSTS = ["meetup-160.herokuapp.com"]
 
 
 # Application definition
@@ -84,6 +85,9 @@ DATABASES = {
         'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
