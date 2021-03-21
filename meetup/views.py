@@ -17,9 +17,13 @@ def about(request):
 def explore_event(request):
     return render(request, "meetup/explore_events.html", {"title": "Explore Events"})
 
+def create_citizen_group():
+    citizen_group, created = Group.objects.get_or_create(name='Citizen')
+    return citizen_group
 
-citizen_group, created = Group.objects.get_or_create(name='Citizen')
-organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
+def create_organizer_group():
+    organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
+    return organizer_group
 
 
 def register_initial(request):
@@ -34,7 +38,7 @@ def register_citizen(request):
             form.save()  # Creates User
             name = form.cleaned_data.get('username')
             user = User.objects.filter(username=name).first()
-            user.groups.add(citizen_group)  # Assigns User to Citizen group
+            user.groups.add(create_citizen_group())  # Assigns User to Citizen group
             user_wallet = Wallet(user=user)  # Creates Wallet for User
             user_wallet.save()
 
@@ -54,7 +58,7 @@ def register_organizer(request):
             form.save()  # Creates User
             name = form.cleaned_data.get('username')
             user = User.objects.filter(username=name).first()
-            user.groups.add(organizer_group)
+            user.groups.add(create_organizer_group)
             user_wallet = Wallet(user=user)
             user_wallet.save()
 
@@ -76,8 +80,8 @@ def register_admin(request):
             user = User.objects.filter(username=name).first()
             user.is_staff = True
             user.is_superuser = True
-            user.groups.add(citizen_group)
-            user.groups.add(organizer_group)
+            user.groups.add(create_citizen_group())
+            user.groups.add(create_organizer_group())
             user.save()  # For saving staff and superuser status
             user_wallet = Wallet(user=user)
             user_wallet.save()
