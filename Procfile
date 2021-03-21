@@ -1,2 +1,2 @@
 web: gunicorn meetup_project.wsgi --log-file -
-release: python manage.py migrate
+release: python3 manage.py migrate
