@@ -1,15 +1,11 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
-from django.contrib.auth.models import User, Group
-
-
-# citizen_group, create = Group.objects.get_or_create(name="Citizen")
-# organizer_group, create2 = Group.objects.get_or_create(name="Organizer")
+from django.contrib.auth.models import User
 
 
 class CreditCard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    credit_card_number = models.PositiveIntegerField(validators=[
+    credit_card_number = models.PositiveBigIntegerField(validators=[
         MinValueValidator(1000000000000000),
         MaxValueValidator(9999999999999999)])
     expiry_date = models.DateField()
@@ -24,7 +20,9 @@ class CreditCard(models.Model):
 class Wallet(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 primary_key=True)
-    balance = models.IntegerField(default=0)
+    balance = models.IntegerField(default=0, validators=[
+        MinValueValidator(0),
+        MaxValueValidator(1000)])
 
     def __str__(self):
         return f"{self.user}'s Wallet"
@@ -43,3 +41,6 @@ class Event(models.Model):
     description = models.TextField()
     contact_info = models.TextField()
     attendees = models.JSONField()
+
+    def __str__(self):
+        return f"{self.user}'s Event: {self.name}"
