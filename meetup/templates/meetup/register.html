@@ -7,7 +7,7 @@
             <fieldset class="form-group">
                 {% if form.last_name %} <!-- Citizen Form -->
                     <legend class="border-bottom mb-4">Create An Citizen Account</legend>
-                {% else %} <!-- Organizer Form -->
+                {% elif form.first_name %} <!-- Organizer Form -->
                     <legend class="border-bottom mb-4">Create An Organizer Account</legend>
                 {% endif %}
                 <small><p style="text-align:left;">* = required field</p></small>
