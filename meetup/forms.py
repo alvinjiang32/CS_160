@@ -1,9 +1,7 @@
 from django import forms
-from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from django.core.validators import MinValueValidator
 from django.forms import ModelForm
-from .models import CreditCard, Event
+from .models import *
 
 
 class RegisterCitizenForm(UserCreationForm):
@@ -41,6 +39,41 @@ class LoginForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['username', 'password']
+
+
+class UpdateCitizenForm(ModelForm):
+    email = forms.EmailField()
+    first_name = forms.CharField(label='First Name')
+    last_name = forms.CharField(label='Last Name')
+
+    class Meta:
+        model = User
+        fields = ['email', 'first_name', 'last_name']
+
+
+class UpdateOrganizerForm(ModelForm):
+    email = forms.EmailField()
+    first_name = forms.CharField(label='Organization Name')
+
+    class Meta:
+        model = User
+        fields = ['email', 'first_name']
+
+
+class UpdateAdminForm(ModelForm):
+    email = forms.EmailField()
+
+    class Meta:
+        model = User
+        fields = ['email']
+
+
+class UpdateProfileForm(ModelForm):
+    pic = forms.ImageField(label="Profile Picture")
+
+    class Meta:
+        model = Profile
+        fields = ['pic']
 
 
 class CreditCardForm(ModelForm):

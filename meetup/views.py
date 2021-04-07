@@ -1,3 +1,4 @@
+from django.contrib.auth.forms import PasswordChangeForm
 from .forms import *
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -7,12 +8,12 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
 
-def create_citizen_group():
+def get_citizen_group():
     citizen_group, created = Group.objects.get_or_create(name='Citizen')
     return citizen_group
 
 
-def create_organizer_group():
+def get_organizer_group():
     organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
     return organizer_group
 
@@ -34,12 +35,11 @@ def register_citizen(request):
     if request.method == 'POST':  # If form was filled out and submitted
         form = RegisterCitizenForm(request.POST)
         if form.is_valid():
-            form.save()  # Creates User
+            form.save()  # Creates User. User's Profile and Wallet created
+            # automatically
             name = form.cleaned_data.get('username')
             user = User.objects.filter(username=name).first()
-            user.groups.add(create_citizen_group())  # Assigns User to Citizen group
-            user_wallet = Wallet(user=user)  # Creates Wallet for User
-            user_wallet.save()
+            user.groups.add(get_citizen_group())  # Assigns User to Citizen group
 
             username = form.cleaned_data.get('username')
             messages.success(request, f"Hey {username}, welcome to MeetUp!")
@@ -54,12 +54,10 @@ def register_organizer(request):
     if request.method == 'POST':
         form = RegisterOrganizerForm(request.POST)
         if form.is_valid():
-            form.save()  # Creates User
+            form.save()
             name = form.cleaned_data.get('username')
             user = User.objects.filter(username=name).first()
-            user.groups.add(create_organizer_group)
-            user_wallet = Wallet(user=user)
-            user_wallet.save()
+            user.groups.add(get_organizer_group())
 
             username = form.cleaned_data.get('username')
             messages.success(request, f"Hey {username}, welcome to MeetUp!")
@@ -79,11 +77,9 @@ def register_admin(request):
             user = User.objects.filter(username=name).first()
             user.is_staff = True
             user.is_superuser = True
-            user.groups.add(create_citizen_group())
-            user.groups.add(create_organizer_group())
+            user.groups.add(get_citizen_group())
+            user.groups.add(get_organizer_group())
             user.save()  # For saving staff and superuser status
-            user_wallet = Wallet(user=user)
-            user_wallet.save()
             return redirect("admin:index")
     else:
         form = RegisterAdminForm()
@@ -117,7 +113,72 @@ def login_user(request):
 
 def logout_user(request):
     logout(request)
-    return redirect('meetup-home')
+    return redirect('meetup-login')
+
+
+@login_required(login_url='meetup-login')
+def profile(request):
+    user_wallet = Wallet.objects.get(user=request.user)
+    context = {'title': f"{request.user}'s Profile",
+               'robucks': user_wallet.balance,
+               'credit_cards': CreditCard.objects.filter(user=request.user)}
+    return render(request, "meetup/profile.html", context)
+
+
+@login_required(login_url='meetup-login')
+def profile_update(request):
+    if request.method == "POST":
+        if request.user.groups.filter(name='Citizen').exists() and \
+                request.user.groups.filter(name='Organizer').exists():
+            u_form = UpdateAdminForm(request.POST, instance=request.user)
+        elif request.user.groups.filter(name='Citizen').exists():
+            u_form = UpdateCitizenForm(request.POST, instance=request.user)
+        else:
+            u_form = UpdateOrganizerForm(request.POST, instance=request.user)
+
+        p_form = UpdateProfileForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f"Your account has been updated!")
+            return redirect("meetup-profile")
+    else:
+        if request.user.groups.filter(name='Citizen').exists() and \
+                request.user.groups.filter(name='Organizer').exists():
+            u_form = UpdateAdminForm(instance=request.user)
+        elif request.user.groups.filter(name='Citizen').exists():
+            u_form = UpdateCitizenForm(instance=request.user)
+        else:
+            u_form = UpdateOrganizerForm(instance=request.user)
+
+        p_form = UpdateProfileForm(instance=request.user.profile)
+
+    context = {'title': f"{request.user.username}'s Profile",
+               "u_form": u_form,
+               "p_form": p_form
+               }
+    return render(request, "meetup/profile_update.html", context)
+
+
+@login_required(login_url='meetup-login')
+def password_change(request):
+    if request.method == 'POST':
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,
+                             'Your password was successfully changed!')
+            return redirect('meetup-login')
+        else:
+            messages.error(request, 'Please correct the error below.')
+    else:
+        form = PasswordChangeForm(request.user)
+
+    context = {'title': f"Change Password", "form": form}
+    return render(request, 'meetup/password_change.html', context)
 
 
 @login_required(login_url='meetup-login')
@@ -131,7 +192,7 @@ def creditcard(request):
             card.user = request.user
             card.save()
             messages.success(request, "Credit card added!")
-            return redirect('meetup-creditcard')
+            return redirect('meetup-profile')
 
     context = {'form': form, 'title': "Add Credit Card"}
     return render(request, "meetup/creditcard.html", context)
@@ -140,8 +201,7 @@ def creditcard(request):
 @login_required(login_url='meetup-login')
 def wallet(request):
     user_wallet = Wallet.objects.get(user=request.user)
-    context = {'username': request.user.username,
-               'robucks': user_wallet.balance}
+    context = {'robucks': user_wallet.balance}
     return render(request, "meetup/wallet.html", context)
 
 
@@ -185,4 +245,3 @@ def event_create(request):
     context = {'form': form}
 
     return render(request, "meetup/event_create.html", context)
-

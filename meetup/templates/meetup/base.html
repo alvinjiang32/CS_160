@@ -33,12 +33,11 @@
 
         {% if user.is_authenticated %}
             <li><a href="{% url 'meetup-event-create' %}">Create Event</a></li>
-            <li><a href="{% url 'meetup-creditcard' %}">Credit Cards</a></li>
             <li style="float:right"><a href="{% url 'meetup-logout' %}">Logout</a></li>
             {% load get_wallet from meetup_tags %}
             {% get_wallet user=user as wallet %}
             <li style="float:right"><a href="{% url 'meetup-wallet' %}">Robucks: {{ wallet.balance }} </a></li>
-            <li style="float:right"><a href="#">{{ user.username }}</a></li>
+            <li style="float:right"><a href="{% url 'meetup-profile' %}">{{ user.username }}</a></li>
         {% else %}
             <li style="float:right"><a href="{% url 'meetup-register-initial' %}">Register</a></li>
             <li style="float:right"><a href="{% url 'meetup-login' %}">Login</a></li>

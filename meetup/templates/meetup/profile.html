@@ -1,0 +1,43 @@
+{% extends "meetup/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <center>
+        <div>
+            <img class="rounded-circle account-img" src="{{ user.profile.pic.url }}" width="200" height="200">
+            <h2>{{ user.username }}</h2>
+            {% for group in user.groups.all %}
+                <h5>{{ group.name }}</h5>
+            {% endfor %}
+            <h5>{{ user.email }}</h5>
+            <h5>{{ user.first_name}} {{ user.last_name }}</h5>
+            <a href="{% url 'meetup-profile-update' %}">Update Account Info | </a>
+            <a href="{% url 'meetup-password-change' %}"> Change Password</a>
+            <hr>
+
+            <h3>Wallet</h3>
+            <h5> Robucks: {{ robucks }} </h5>
+            <a href="{% url 'meetup-payment' %}"><button class="btn btn-success" type="submit">Add</button></a>
+            <hr>
+
+            <h3>Credit Cards</h3>
+            {% for credit_card in credit_cards %}
+                <div class="card rounded" style="width:400px; height:auto">
+                  <div class="card-header">
+                      {{ credit_card }}
+                  </div>
+                  <div class="card-body">
+                    <p class="card-text">Name: {{ credit_card.name}}</p>
+                      <p class="card-text">Credit Card Number: {{ credit_card.credit_card_number}}</p>
+                      <p class="card-text">Expiry Date: {{ credit_card.expiry_date|date:"SHORT_DATE_FORMAT"}}</p>
+                      <p class="card-text">CVC: {{ credit_card.cvc_code}}</p>
+                  </div>
+                </div>
+            <br>
+            {% endfor %}
+            <a href="{% url 'meetup-creditcard' %}"><button class="btn btn-info" type="submit">Add Card</button></a>
+            <hr>
+
+            <h3>Events</h3>
+        </div>
+    </center>
+{% endblock content %}

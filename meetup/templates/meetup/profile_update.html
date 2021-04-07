@@ -1,0 +1,27 @@
+{% extends "meetup/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <center>
+        <img class="rounded-circle account-img" src="{{ user.profile.pic.url }}" width="200" height="200">
+        <h2>{{ user.username }}</h2>
+        <h5>{{ user.email }}</h5>
+        <h5>{{ user.first_name}} {{ user.last_name }}</h5>
+    </center>
+     <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %} <!-- token required for forms in Django -->
+        <fieldset class="form-group">
+            <small><p style="text-align:left;">* = required field</p></small>
+            {{ u_form|crispy }}
+            {{ p_form|crispy }}
+        </fieldset>
+        <div class="form-group">
+            <button class="btn btn-outline-warning" type="submit">Update</button>
+        </div>
+    </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+                <a class="ml-2" href="{% url 'meetup-password-change' %}">Need To Change Password?</a>
+        </small>
+    </div>
+
+{% endblock content %}
