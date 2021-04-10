@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -104,6 +106,12 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': 'hggdzxxh5',
+    'API_KEY': '662787142826187',
+    'API_SECRET': 'QYA_dDEsHum6LwDqHCVbInRfo7A',
+}
 
 
 # Internationalization
