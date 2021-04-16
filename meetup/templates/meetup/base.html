@@ -32,7 +32,7 @@
         <h2 style="color:white; font-family:'Garamond'; text-align:center; display: inline-block">MeetUp!</h2>
 
         {% if user.is_authenticated %}
-            <li><a href="{% url 'meetup-event-create' %}">Create Event</a></li>
+            <li><a href="{% url 'event-create' %}">Create Event</a></li>
             <li style="float:right"><a href="{% url 'meetup-logout' %}">Logout</a></li>
             {% load get_wallet from meetup_tags %}
             {% get_wallet user=user as wallet %}

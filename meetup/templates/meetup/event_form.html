@@ -1,0 +1,13 @@
+{% extends "meetup/base.html" %}
+{% load crispy_forms_tags %}
+{% block content %}
+    <div class="content-section">
+        <legend class="border-bottom">Event Form</legend>
+        <small><p style="text-align:left mb-5">* = required field</p></small>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button class="btn btn-outline-info" type="submit">Submit Event</button>
+        </form>
+    </div>
+{% endblock content %}

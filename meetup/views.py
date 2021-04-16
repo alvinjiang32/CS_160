@@ -6,6 +6,9 @@ from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 
 def get_citizen_group():
@@ -15,6 +18,7 @@ def get_citizen_group():
 
 def get_organizer_group():
     organizer_group, created2 = Group.objects.get_or_create(name='Organizer')
+    print(created2)
     return organizer_group
 
 
@@ -121,7 +125,8 @@ def profile(request):
     user_wallet = Wallet.objects.get(user=request.user)
     context = {'title': f"{request.user}'s Profile",
                'robucks': user_wallet.balance,
-               'credit_cards': CreditCard.objects.filter(user=request.user)}
+               'credit_cards': CreditCard.objects.filter(user=request.user),
+               'events': Event.objects.filter(user=request.user)}
     return render(request, "meetup/profile.html", context)
 
 
@@ -223,25 +228,107 @@ def payment(request):
     return render(request, "meetup/payment.html", context)
 
 
+# @login_required(login_url='meetup-login')
+# def event_create(request):
+#     form = EventForm()
+
+#     if request.method == 'POST':
+#         form = EventForm(request.POST)
+#         if form.is_valid():
+#             event = form.save(commit=False)
+#             event.user = request.user
+#             form.save()  # Save form
+#             name = form.cleaned_data.get('name')
+#             messages.success(request, f"Event: {name} Successfully Created!")
+#             return redirect("meetup-profile")
+
+#     context = {'form': form}
+
+#     return render(request, "meetup/event_create.html", context)
+
+# @login_required(login_url='meetup-login')
+# def event_update(request):
+#     form = EventForm()
+
+#     if request.method == 'POST':
+#         form = EventForm(request.POST)
+#         if form.is_valid():
+#             event = form.save()
+#             messages.success(request, f"Event: {name} Successfully Edited!")
+#             return redirect(f"event-detail/{event.id}")
+
 def event_explore(request):
-    return render(request, "meetup/event_explore.html",
-                  {"title": "Explore Events"})
+    context = {
+        'events': Event.objects.all()
+    }
+    get_organizer_group()
+    return render(request, "meetup/event_explore.html", context)
 
+# class EventListView(ListView):
+#     model = Event
+#     template_name = 'templates/event_detail.html'
+#     context_object_name = 'events'
 
-@login_required(login_url='meetup-login')
-def event_create(request):
-    form = EventForm()
+class EventDetailView(DetailView):
+    model = Event
 
-    if request.method == 'POST':
-        form = EventForm(request.POST)
-        if form.is_valid():
-            form.save()  # Save form
-            name = form.cleaned_data.get('name')
-            user = User.objects.filter(username=name).first()
-            username = form.cleaned_data.get('name')
-            messages.success(request, f"Event: {name} Successfully Created!")
-            return redirect("meetup-event-create")
+class EventCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+    model = Event
+    fields = ['name', 'location','date', 'price', 'max_age', 'min_age', 'capacity',
+              'activity_type', 'description', 'contact_info']
+    
+    def form_valid(self, form):
+        form.instance.attendees = ""
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
+    success_url = '/profile/'
+    success_message = '%(name)s successfully created!'
 
-    context = {'form': form}
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data,
+            name=self.object.name,
+        )
 
-    return render(request, "meetup/event_create.html", context)
+class EventUpdateView(SuccessMessageMixin, LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Event
+    fields = ['name', 'location','date', 'price', 'max_age', 'min_age', 'capacity',
+              'activity_type', 'description', 'contact_info']
+    
+    def form_valid(self, form):
+        form.instance.attendees = ""
+        return super().form_valid(form)
+    
+    def test_func(self):
+        event = self.get_object()
+        if self.request.user == event.user:
+            return True
+        return False
+    
+    success_url = '/profile/'
+    success_message = '%(name)s successfully updated!'
+
+    def get_success_message(self, cleaned_data):
+        return self.success_message % dict(
+            cleaned_data,
+            name=self.object.name,
+        )
+
+class EventDeleteView(SuccessMessageMixin, LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Event
+
+    def test_func(self):
+        event = self.get_object()
+        if self.request.user == event.user:
+            return True
+        return False
+    
+    success_url = '/profile/'
+    success_message = '%(name)s successfully deleted!'
+
+    def delete(self, request, *args, **kwargs):
+        event = self.get_object()
+        messages.success(self.request, self.success_message % event.__dict__)
+        return super(EventDeleteView, self).delete(request, *args, **kwargs)
+    

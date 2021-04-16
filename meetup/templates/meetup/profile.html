@@ -38,6 +38,17 @@
             <hr>
 
             <h3>Events</h3>
+            <div class="content-section">
+                <ul class="list-group">
+                    {% for event in events %}
+                        <li class="list-group-item">
+                            <a href="{% url 'event-detail' event.id %}">{{ event.name }}</a>
+                            <p>{{ event.description }}</p>
+                            <p>Date of Event: {{ event.date }}</p>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
         </div>
     </center>
 {% endblock content %}

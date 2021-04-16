@@ -22,8 +22,13 @@ urlpatterns = [
          name="meetup-profile-update"),
     path('password-change', views.password_change,
          name='meetup-password-change'),
-    path('event-create/', views.event_create, name="meetup-event-create"),
     path('event-explore/', views.event_explore, name="meetup-event-explore"),
+    
+    path('events/new/', views.EventCreateView.as_view(), name="event-create"),
+    path('events/<uuid:pk>/', views.EventDetailView.as_view(), name="event-detail"),
+    path('events/<uuid:pk>/update', views.EventUpdateView.as_view(), name="event-update"),
+    path('events/<uuid:pk>/delete', views.EventDeleteView.as_view(), name="event-delete"),
+    
     path('creditcard/', views.creditcard, name='meetup-creditcard'),
     path('wallet/', views.wallet, name='meetup-wallet'),
     path('payment/', views.payment, name='meetup-payment'),
