@@ -229,36 +229,6 @@ def payment(request):
     context = {'form': form, "title": "Pay"}
     return render(request, "meetup/payment.html", context)
 
-
-# @login_required(login_url='meetup-login')
-# def event_create(request):
-#     form = EventForm()
-
-#     if request.method == 'POST':
-#         form = EventForm(request.POST)
-#         if form.is_valid():
-#             event = form.save(commit=False)
-#             event.user = request.user
-#             form.save()  # Save form
-#             name = form.cleaned_data.get('name')
-#             messages.success(request, f"Event: {name} Successfully Created!")
-#             return redirect("meetup-profile")
-
-#     context = {'form': form}
-
-#     return render(request, "meetup/event_create.html", context)
-
-# @login_required(login_url='meetup-login')
-# def event_update(request):
-#     form = EventForm()
-
-#     if request.method == 'POST':
-#         form = EventForm(request.POST)
-#         if form.is_valid():
-#             event = form.save()
-#             messages.success(request, f"Event: {name} Successfully Edited!")
-#             return redirect(f"event-detail/{event.id}")
-
 def event_explore(request):
     form = RegisterEventForm()
     
@@ -295,11 +265,6 @@ def send_coords(request):
     return JsonResponse(data, safe=False)
     #return HttpResponse(qs_json, content_type="application/json")
     
-
-# class EventListView(ListView):
-#     model = Event
-#     template_name = 'templates/event_detail.html'
-#     context_object_name = 'events'
 
 class EventDetailView(DetailView):
     model = Event
