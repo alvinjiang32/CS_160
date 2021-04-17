@@ -51,9 +51,9 @@ class Wallet(models.Model):
 
 class Event(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    location = models.CharField(max_length=50)
+    user = models.ForeignKey(User, related_name='event_owner', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    location = models.JSONField()
     date = models.DateField()
     price = models.PositiveIntegerField(default=0)
     max_age = models.PositiveIntegerField(default=100)
@@ -62,7 +62,7 @@ class Event(models.Model):
     activity_type = models.CharField(max_length=25)
     description = models.TextField()
     contact_info = models.TextField()
-    attendees = models.JSONField()
+    attendees = models.ManyToManyField(User, related_name='event_attendees', blank=True)
 
     def __str__(self):
         return f"{self.user}'s Event: {self.name}"

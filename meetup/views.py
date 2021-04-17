@@ -9,6 +9,7 @@ from django.contrib.auth.models import Group
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.http import JsonResponse
 
 
 def get_citizen_group():
@@ -126,6 +127,7 @@ def profile(request):
     context = {'title': f"{request.user}'s Profile",
                'robucks': user_wallet.balance,
                'credit_cards': CreditCard.objects.filter(user=request.user),
+               'events_registered': Event.objects.filter(attendees=request.user),
                'events': Event.objects.filter(user=request.user)}
     return render(request, "meetup/profile.html", context)
 
@@ -258,11 +260,41 @@ def payment(request):
 #             return redirect(f"event-detail/{event.id}")
 
 def event_explore(request):
-    context = {
-        'events': Event.objects.all()
-    }
-    get_organizer_group()
+    form = RegisterEventForm()
+    
+    if request.method == 'POST':
+        form = RegisterEventForm(request.POST)
+        if form.is_valid():
+            if not request.user.is_authenticated:
+                messages.error(request, 'Please log in')
+            else:
+                event = form.cleaned_data.get('name').first()
+                people = event.attendees.all()
+                current = User.objects.filter(username=request.user).first()
+                event.attendees.set(people)
+                event.attendees.add(current)
+                messages.success(request, "Registered for event!")
+            return redirect("meetup-event-explore")
+    
+    context = {'form': form, "title": "Explore Events"}
     return render(request, "meetup/event_explore.html", context)
+   
+
+def send_coords(request):
+    #data = request.POST
+    #coords = request.POST.get('coords')
+    #data = json.loads(request.POST.get('coords'))
+    #data = {
+      #  'sent': coords
+    #}
+    data = ''
+    if request.method == 'GET':
+        data = list(Event.objects.all().values_list('location'))
+        #qs = Event.objects.all().values_list('location')
+        #qs_json = serializers.serialize('json', qs)
+    return JsonResponse(data, safe=False)
+    #return HttpResponse(qs_json, content_type="application/json")
+    
 
 # class EventListView(ListView):
 #     model = Event
@@ -276,9 +308,7 @@ class EventCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Event
     fields = ['name', 'location','date', 'price', 'max_age', 'min_age', 'capacity',
               'activity_type', 'description', 'contact_info']
-    
     def form_valid(self, form):
-        form.instance.attendees = ""
         form.instance.user = self.request.user
         return super().form_valid(form)
     
@@ -297,7 +327,6 @@ class EventUpdateView(SuccessMessageMixin, LoginRequiredMixin, UserPassesTestMix
               'activity_type', 'description', 'contact_info']
     
     def form_valid(self, form):
-        form.instance.attendees = ""
         return super().form_valid(form)
     
     def test_func(self):

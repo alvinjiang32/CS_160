@@ -23,7 +23,7 @@ urlpatterns = [
     path('password-change', views.password_change,
          name='meetup-password-change'),
     path('event-explore/', views.event_explore, name="meetup-event-explore"),
-    
+    path('send-coords/', views.send_coords, name="meetup-send-coords"),
     path('events/new/', views.EventCreateView.as_view(), name="event-create"),
     path('events/<uuid:pk>/', views.EventDetailView.as_view(), name="event-detail"),
     path('events/<uuid:pk>/update', views.EventUpdateView.as_view(), name="event-update"),
