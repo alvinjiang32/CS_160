@@ -50,7 +50,7 @@ class Wallet(models.Model):
 
 
 class Event(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
     user = models.ForeignKey(User, related_name='event_owner', on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     location = models.JSONField()
