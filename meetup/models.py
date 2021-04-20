@@ -1,7 +1,9 @@
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.contrib.auth.models import User
+from django.urls import reverse
 from PIL import Image
+import uuid
 
 
 class Profile(models.Model):
@@ -48,9 +50,10 @@ class Wallet(models.Model):
 
 
 class Event(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    name = models.CharField(max_length=50)
-    location = models.CharField(max_length=50)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
+    user = models.ForeignKey(User, related_name='event_owner', on_delete=models.CASCADE)
+    name = models.CharField(max_length=100)
+    location = models.JSONField()
     date = models.DateField()
     price = models.PositiveIntegerField(default=0)
     max_age = models.PositiveIntegerField(default=100)
@@ -59,7 +62,10 @@ class Event(models.Model):
     activity_type = models.CharField(max_length=25)
     description = models.TextField()
     contact_info = models.TextField()
-    attendees = models.JSONField()
+    attendees = models.ManyToManyField(User, related_name='event_attendees', blank=True)
 
     def __str__(self):
         return f"{self.user}'s Event: {self.name}"
+
+    def get_absolute_url(self):
+        return reverse('event-detail', kwargs={'pk': self.id})

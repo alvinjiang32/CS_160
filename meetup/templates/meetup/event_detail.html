@@ -1,0 +1,23 @@
+{% extends "meetup/base.html" %}
+{% block content %}
+    <article class="content-section">
+        <div class="media-body">
+            <legend class="border-bottom mb-5">Details For "{{ object.name }}"</legend>
+            <p class="">Name: {{ object.name }}</p>
+            <p class="">Description: {{ object.description }}</p>
+            <p class="">Location: {{ object.location }}</p>
+            <p class="">Price: {{ object.price }}</p>
+            <p class="">Capacity: {{ object.capacity }}</p>
+            <p class="">Activity Type: {{ object.activity_type }}</p>
+            <p class="">Attendees: {{ object.attendees }}</p>
+            <p class="">Contact Details: {{ object.contact_info }}</p>
+
+            <small class="text-muted">Date: {{ object.date|date:"F d, Y" }}</small>
+            <p></p>
+            {% if object.user == user %}
+                <a class="btn btn-outline-secondary btm-sm" href="{% url 'event-update' object.id %}">Update Event</a>
+                <a class="btn btn-outline-danger btm-sm" href="{% url 'event-delete' object.id %}">Delete Event</a>
+            {% endif %}
+        </div>
+    </article>
+{% endblock content %}

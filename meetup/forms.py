@@ -117,3 +117,10 @@ class EventForm(ModelForm):
         fields = ['user', 'name', 'location', 'date', 'price',
                   'max_age', 'min_age', 'capacity', 'activity_type',
                   'description', 'contact_info', 'attendees']
+                  
+                  
+class RegisterEventForm(ModelForm):
+    name = forms.ModelMultipleChoiceField(queryset=Event.objects.all())
+    class Meta:
+        model = Event
+        fields = ['name']
