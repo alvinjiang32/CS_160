@@ -10,6 +10,7 @@ function initMap() {
   // create marker based on id_location (if updating, or if refreshing page)
     const loc = document.getElementById('id_location')
 	console.log(loc);
+	loc.readOnly = true;
   if (loc !== null && document.getElementById('id_location').value !== 'null') {
 		console.log("in here");
 	  coords = document.getElementById('id_location').value;
