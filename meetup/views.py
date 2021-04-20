@@ -118,9 +118,8 @@ def logout_user(request):
 
 @login_required(login_url='meetup-login')
 def profile(request):
-    user_wallet = Wallet.objects.get(user=request.user)
     context = {'title': f"{request.user}'s Profile",
-               'robucks': user_wallet.balance,
+               'robucks': Wallet.objects.get(user=request.user).balance,
                'credit_cards': CreditCard.objects.filter(user=request.user)}
     return render(request, "meetup/profile.html", context)
 
