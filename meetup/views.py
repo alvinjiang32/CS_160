@@ -10,6 +10,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
+from django.conf import settings
 
 
 def get_citizen_group():
@@ -115,6 +116,21 @@ def login_user(request):
         context = {'form': form, 'title': "Login"}
         return render(request, "meetup/login.html", context)
 
+
+def contact(request):
+    if request.method == "POST":
+        contct = Contact()
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        subject = request.POST.get('subject')
+        contct.name = name
+        contct.email = email
+        contct. subject = subject
+        contct.save()
+        messages.success(request, f"Thank you {contct.name}, we will be contact with you shortly!")
+        return redirect('meetup-home')
+
+    return render(request, 'meetup/contact.html')
 
 def logout_user(request):
     logout(request)
@@ -245,8 +261,8 @@ def event_explore(request):
                 event.attendees.add(current)
                 messages.success(request, "Registered for event!")
             return redirect("meetup-event-explore")
-    
-    context = {'form': form, "title": "Explore Events"}
+    #api_key_string = [k for k, v in locals().items() if v == settings.GOOGLE_MAPS_API_KEY][0]
+    context = {'form': form, "title": "Explore Events", "api_key": settings.GOOGLE_MAPS_API_KEY}
     return render(request, "meetup/event_explore.html", context)
    
 
@@ -274,6 +290,11 @@ class EventCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Event
     fields = ['name', 'location','date', 'price', 'max_age', 'min_age', 'capacity',
               'activity_type', 'description', 'contact_info']
+              
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['api_key'] = settings.GOOGLE_MAPS_API_KEY
+        return context
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -295,6 +316,11 @@ class EventUpdateView(SuccessMessageMixin, LoginRequiredMixin,
     fields = ['name', 'location','date', 'price', 'max_age', 'min_age', 'capacity',
               'activity_type', 'description', 'contact_info']
     
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['api_key'] = settings.GOOGLE_MAPS_API_KEY
+        return context
+     
     def form_valid(self, form):
         return super().form_valid(form)
     

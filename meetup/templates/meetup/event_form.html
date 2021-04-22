@@ -22,9 +22,20 @@
 	</div>
 {% endblock content %}
 {% block footer_scripts %}
+	<script>
+		var str1 = "https://maps.googleapis.com/maps/api/js?key=";
+		var str2 = "&callback=initMap&libraries=&v=weekly";
+		var api = new String("{{api_key}}");
+		var api_link = str1.concat(api, str2);
+	</script>
 	<!-- Async script to load Maps API -->
-	<script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBCeA7xJemPCf-VQV_JpxSMiatQIych_YM&callback=initMap&libraries=&v=weekly"
-      async
-    ></script>
+	<script>
+		var scriptElement = document.createElement("script");
+		scriptElement.src = api_link;
+		scriptElement.async = "";
+		document.head.appendChild(scriptElement);
+		const loc = document.getElementById('id_location')
+		//console.log(loc);
+		loc.readOnly = true;
+	</script>
 {% endblock %}
