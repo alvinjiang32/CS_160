@@ -12,3 +12,4 @@ sqlparse==0.4.1
 whitenoise==5.2.0
 cloudinary==1.17.0
 django-cloudinary-storage==0.2.3
+python-dotenv==0.17.0
