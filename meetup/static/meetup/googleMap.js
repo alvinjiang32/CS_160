@@ -8,9 +8,6 @@ function initMap() {
     center: sjsu,
   });
   // create marker based on id_location (if updating, or if refreshing page)
-    const loc = document.getElementById('id_location')
-	console.log(loc);
-	loc.readOnly = true;
   if (loc !== null && document.getElementById('id_location').value !== 'null') {
 		console.log("in here");
 	  coords = document.getElementById('id_location').value;
@@ -52,7 +49,7 @@ function geocodeAndFind(geocoder, resultsMap) {
       alert("Geocode was not successful for the following reason: " + status);
     }
 		var $j = jQuery.noConflict();
-		console.log("Inside footer script");
+		//console.log("Inside footer script");
 		$.ajax({
 		  url: '/send-coords/',
 		  //data: {

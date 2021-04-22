@@ -29,6 +29,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # TURN THIS OFF BEFORE PUSHING TO GIT!!!!!!
 
+# GOOGLE MAPS API KEY
+GOOGLE_MAPS_API_KEY = os.environ.get('GOOGLE_MAPS_API_KEY')
 
 ALLOWED_HOSTS = ["meetup-160.herokuapp.com"]
 
