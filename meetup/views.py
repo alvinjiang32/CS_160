@@ -128,18 +128,20 @@ def login_user(request):
 
 def contact(request):
     if request.method == "POST":
-        contct = Contact()
+        contact = Contact()
         name = request.POST.get('name')
         email = request.POST.get('email')
         subject = request.POST.get('subject')
-        contct.name = name
-        contct.email = email
-        contct. subject = subject
-        contct.save()
-        messages.success(request, f"Thank you {contct.name}, we will be contact with you shortly!")
+        contact.name = name
+        contact.email = email
+        contact.subject = subject
+        contact.save()
+        messages.success(request, f"Thank you {contact.name}, "
+                                  f"we will be contact with you shortly!")
         return redirect('meetup-home')
 
     return render(request, 'meetup/contact.html')
+
 
 def logout_user(request):
     logout(request)
