@@ -1,9 +1,11 @@
 {% extends "meetup/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+
 {% block header_scripts %}
 	<script src="{% static 'meetup/googleMap.js' %}"></script>
 {% endblock header_scripts %}
+
 {% block content %}
     <div class="content-section">
         <legend class="border-bottom">Event Form</legend>
@@ -15,12 +17,13 @@
             <button class="btn btn-outline-info" type="submit">Submit Event</button>
         </form>
     </div>
-<!-- Div element for Google Map -->
+	<!-- Div element for Google Map -->
 	<div id="floating-panel">
 		<input id="address" type="textbox" value="Enter location" />
 		<input id="submit" type="button" value="Use location" />
 	</div>
 {% endblock content %}
+
 {% block footer_scripts %}
 	<script>
 		var str1 = "https://maps.googleapis.com/maps/api/js?key=";
@@ -38,4 +41,4 @@
 		//console.log(loc);
 		loc.readOnly = true;
 	</script>
-{% endblock %}
+{% endblock footer_scripts %}

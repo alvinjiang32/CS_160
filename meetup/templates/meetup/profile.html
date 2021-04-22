@@ -1,5 +1,6 @@
 {% extends "meetup/base.html" %}
 {% load crispy_forms_tags %}
+{% load meetup_tags %}
 {% block content %}
     <center>
         <div>
@@ -10,23 +11,24 @@
             {% endfor %}
             <h5>{{ user.email }}</h5>
             <h5>{{ user.first_name}} {{ user.last_name }}</h5>
-            <a href="{% url 'meetup-profile-update' %}">Update Account Info | </a>
+            <a href="{% url 'meetup-profile-update' %}">Update Account Info</a>
+            <p style="display:inline;">|</p>
             <a href="{% url 'meetup-password-change' %}"> Change Password</a>
             <hr>
 
-            <h3>Wallet</h3>
+            <h3>My Wallet</h3>
             <h5> Robucks: {{ robucks }} </h5>
             <a href="{% url 'meetup-payment' %}"><button class="btn btn-success" type="submit">Add</button></a>
             <hr>
 
-            <h3>Credit Cards</h3>
+            <h3 class="mb-3">My Credit Cards</h3>
             {% for credit_card in credit_cards %}
-                <div class="card rounded" style="width:400px; height:auto">
+                <div class="card text-white bg-info mb-3" style="width:400px; height:auto">
                   <div class="card-header">
                       {{ credit_card }}
                   </div>
                   <div class="card-body">
-                    <p class="card-text">Name: {{ credit_card.name}}</p>
+                      <p class="card-text">Name: {{ credit_card.name}}</p>
                       <p class="card-text">Credit Card Number: {{ credit_card.credit_card_number}}</p>
                       <p class="card-text">Expiry Date: {{ credit_card.expiry_date|date:"SHORT_DATE_FORMAT"}}</p>
                       <p class="card-text">CVC: {{ credit_card.cvc_code}}</p>
@@ -34,30 +36,27 @@
                 </div>
             <br>
             {% endfor %}
-            <a href="{% url 'meetup-creditcard' %}"><button class="btn btn-info" type="submit">Add Card</button></a>
+            <a href="{% url 'meetup-creditcard' %}"><button class="btn btn-outline-info" type="submit">Add Card</button></a>
             <hr>
 
-            <h3>Events</h3>
-            <div class="content-section">
-                <ul class="list-group">
-                    {% for event in events %}
-                        <li class="list-group-item">
-                            <a href="{% url 'event-detail' event.id %}">{{ event.name }}</a>
-                            <p>{{ event.description }}</p>
-                            <p>Date of Event: {{ event.date }}</p>
-                        </li>
-                    {% endfor %}
-					<hr>
-					<h4> Registered for </h4>
-					{% for event in events_registered %}
-                        <li class="list-group-item">
-                            <a href="{% url 'event-detail' event.id %}">{{ event.name }}</a>
-                            <p>{{ event.description }}</p>
-                            <p>Date of Event: {{ event.date }}</p>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
+            <h3 class="mb-3">My Events</h3>
+            {% for event in events %}
+                <div class="card text-white bg-warning mb-3" style="width:400px; height:auto">
+                  <div class="card-header">
+                      <a href="{% url 'event-detail' event.id %}">{{ event.name }}</a>
+                  </div>
+                  <div class="card-body text-left">
+                      <p class="card-text">Date of Event: {{ event.date }}</p>
+                      <p class="card-text">Description: {{ event.description }}</p>
+                      <p class="card-text">Activity Type: {{ event.activity_type }}</p>
+                  </div>
+                </div>
+            {% endfor %}
+            {% if user|has_group:"Citizen" %}
+                <a href="{% url 'meetup-event-explore' %}"><button class="btn btn-outline-warning" type="submit">Add Event</button></a>
+            {% else %}
+                <a href="{% url 'event-create' %}"><button class="btn btn-outline-warning" type="submit">Create Event</button></a>
+            {% endif %}
         </div>
     </center>
 {% endblock content %}

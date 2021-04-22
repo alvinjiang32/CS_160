@@ -88,7 +88,7 @@ class CreditCardForm(ModelForm):
         fields = ['name', 'credit_card_number', 'expiry_date',
                   'cvc_code']
 
-        
+
 class PaymentForm(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -105,10 +105,10 @@ class PaymentForm(forms.Form):
         )
 
 
-class EventForm(ModelForm):
+class CreateEventForm(ModelForm):
     date = forms.DateField(label='Date',
-                           widget=forms.TextInput(
-                               attrs={'placeholder': 'MM/DD/YYYY'}))
+                           widget=forms.TextInput(attrs={'placeholder':
+                                                             'MM/DD/YYYY'}))
     name = forms.CharField(label='Event Name')
     attendees = forms.CharField()
 
@@ -117,10 +117,12 @@ class EventForm(ModelForm):
         fields = ['user', 'name', 'location', 'date', 'price',
                   'max_age', 'min_age', 'capacity', 'activity_type',
                   'description', 'contact_info', 'attendees']
-                  
-                  
+
+
 class RegisterEventForm(ModelForm):
-    name = forms.ModelMultipleChoiceField(queryset=Event.objects.all())
+    name = forms.ModelMultipleChoiceField(label='Select An Event',
+                                          queryset=Event.objects.all())
+
     class Meta:
         model = Event
         fields = ['name']
