@@ -11,7 +11,9 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 import dj_database_url
+from dotenv import load_dotenv
 from pathlib import Path
+load_dotenv()
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -22,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'hb2qyn7be9-jqu4*i5*&-f-@#d^mra%n1o$m#4=_qk_0c(f2#t'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True  # TURN THIS OFF BEFORE PUSHING TO GIT!!!!!!
@@ -108,9 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'hggdzxxh5',
-    'API_KEY': '662787142826187',
-    'API_SECRET': 'QYA_dDEsHum6LwDqHCVbInRfo7A',
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET'),
 }
 
 
