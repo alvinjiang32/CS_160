@@ -24,6 +24,14 @@ class Profile(models.Model):
             img.save(self.pic.path)
 
 
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.TextField()
+    def __str(self):
+        return self.name
+
+
 class CreditCard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     credit_card_number = models.PositiveBigIntegerField(validators=[

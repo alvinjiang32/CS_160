@@ -15,6 +15,7 @@ urlpatterns = [
          name='meetup-register-organizer'),
     path('register-admin/', views.register_admin,
          name='meetup-register-admin'),
+    path('contact/', views.contact, name="meetup-contact"),
     path('login/', views.login_user, name="meetup-login"),
     path('logout/', views.logout_user, name='meetup-logout'),
     path('profile/', views.profile, name='meetup-profile'),
