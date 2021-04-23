@@ -290,8 +290,8 @@ class EventDetailView(DetailView):
 
 class EventCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Event
-    fields = ['name', 'location','date', 'price', 'max_age', 'min_age', 'capacity',
-              'activity_type', 'description', 'contact_info']
+    fields = ['name', 'location', 'date', 'price', 'max_age', 'min_age',
+              'capacity', 'activity_type', 'description', 'contact_info']
 
     def __init__(self):
         super().__init__()
