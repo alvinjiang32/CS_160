@@ -1,19 +1,50 @@
 {% extends "meetup/base.html" %}
 {% block content %}
-    <article class="content-section">
-        <div class="media-body">
-            <legend class="border-bottom mb-5">Details For "{{ object.name }}"</legend>
-            <p class="">Name: {{ object.name }}</p>
-            <p class="">Description: {{ object.description }}</p>
-            <p class="">Location: {{ object.location }}</p>
-            <p class="">Price: {{ object.price }}</p>
-            <p class="">Capacity: {{ object.capacity }}</p>
-            <p class="">Activity Type: {{ object.activity_type }}</p>
-            <p class="">Attendees: {{ object.attendees }}</p>
-            <p class="">Contact Details: {{ object.contact_info }}</p>
+    <article class="container text-center">
+        <div class="card border border-info rounded">
+            <div class="card-header">
+                <h3>"{{ object.name }}" Details</h3>
+            </div>
+            <table class="table">
+                <tbody>
+                    <tr>
+                        <th scope="row">Name:</th>
+                        <td scope="row">{{ object.name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Description:</th>
+                        <td scope="row">{{ object.description }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Location:</th>
+                        <td scope="row">{{ object.location }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Price:</th>
+                        <td scope="row">{{ object.price }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="col">Capacity:</th>
+                        <td scope="row">{{ object.capacity }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="col">Activity:</th>
+                        <td scope="row">{{ object.activity_type }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="col">Attendees:</th>
+                        <td scope="row">{{ object.attendees }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="col">Contact Details:</th>
+                        <td scope="row">{{ object.contact_info }}</td>
+                    </tr>
+                </tbody>
+              </table>
 
-            <small class="text-muted">Date: {{ object.date|date:"F d, Y" }}</small>
-            <p></p>
+            <small class="text-muted">Date of Event: {{ object.date|date:"F d, Y" }}</small>
+        </div>
+        <div class="mt-4">
             {% if object.user == user %}
                 <a class="btn btn-outline-secondary btm-sm" href="{% url 'event-update' object.id %}">Update Event</a>
                 <a class="btn btn-outline-danger btm-sm" href="{% url 'event-delete' object.id %}">Delete Event</a>

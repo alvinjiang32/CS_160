@@ -54,13 +54,22 @@ class Event(models.Model):
                           unique=True)
     user = models.ForeignKey(User, related_name='event_owner',
                              on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=100, help_text="Enter the name of your event")
     location = models.JSONField()
-    date = models.DateField()
+    date = models.DateField(help_text="MM/DD/YYYY")
     price = models.PositiveIntegerField(default=0)
-    max_age = models.PositiveIntegerField(default=100)
-    min_age = models.PositiveIntegerField(default=0)
-    capacity = models.PositiveIntegerField(default=1)
+    max_age = models.PositiveIntegerField(default=70, help_text="Maximum 70", validators=[
+        MinValueValidator(5),
+        MaxValueValidator(70)
+    ])
+    min_age = models.PositiveIntegerField(default=5, help_text="Minimum 5", validators=[
+        MinValueValidator(5),
+        MaxValueValidator(70)
+    ])
+    capacity = models.PositiveIntegerField(help_text="Range 5 - 5000",validators=[
+        MinValueValidator(5),
+        MaxValueValidator(5000)
+    ])
     activity_type = models.CharField(max_length=25)
     description = models.TextField()
     contact_info = models.TextField()
