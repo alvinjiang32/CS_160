@@ -7,8 +7,8 @@
         <h5>{{ user.email }}</h5>
         <h5>{{ user.first_name}} {{ user.last_name }}</h5>
     </center>
-     <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %} <!-- token required for forms in Django -->
+     <form method="POST" enctype="multipart/form-data"> <!-- enctype allows files to be sent through a POST -->
+        {% csrf_token %}
         <fieldset class="form-group">
             <small><p style="text-align:left;">* = required field</p></small>
             {{ u_form|crispy }}
@@ -23,5 +23,4 @@
                 <a class="ml-2" href="{% url 'meetup-password-change' %}">Need To Change Password?</a>
         </small>
     </div>
-
 {% endblock content %}

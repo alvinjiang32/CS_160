@@ -1,41 +1,40 @@
 {% extends "meetup/base.html" %}
 {% load static %}
 {% load crispy_forms_tags %}
+{% load meetup_tags %}
+
 {% block header_scripts %}
 	<script src="{% static 'meetup/googleMap.js' %}"></script>
 {% endblock header_scripts %}
+
 {% block content %}
-    <div class="content-section">
-        <legend class="border-bottom">Event Form</legend>
-		<div id="map"></div>
-        <small><p style="text-align:left mb-5">* = required field</p></small>
-        <form method="post">
-            {% csrf_token %}
-            {{ form|crispy }}
-            <button class="btn btn-outline-info" type="submit">Submit Event</button>
-        </form>
-    </div>
-<!-- Div element for Google Map -->
+	<center><h2>Explore Events</h2></center><br>
+	<div id="map"></div>
+	<form method="post">
+		{% csrf_token %}
+		{{ form|crispy }}
+		{% if user|has_group:"Citizen" or not user.is_authenticated %}
+			<button class="btn btn-outline-info" type="submit">Register For Event</button>
+		{% endif %}
+	</form>
+	<!-- Div element for Google Map -->
 	<div id="floating-panel">
 		<input id="address" type="textbox" value="Enter location" />
-		<input id="submit" type="button" value="Use location" />
+		<input id="search" type="button" value="Find events" />
 	</div>
 {% endblock content %}
+
 {% block footer_scripts %}
 	<script>
 		var str1 = "https://maps.googleapis.com/maps/api/js?key=";
 		var str2 = "&callback=initMap&libraries=&v=weekly";
 		var api = new String("{{api_key}}");
 		var api_link = str1.concat(api, str2);
-	</script>
 	<!-- Async script to load Maps API -->
-	<script>
 		var scriptElement = document.createElement("script");
 		scriptElement.src = api_link;
 		scriptElement.async = "";
 		document.head.appendChild(scriptElement);
 		const loc = document.getElementById('id_location')
-		//console.log(loc);
-		loc.readOnly = true;
 	</script>
-{% endblock %}
+{% endblock footer_scripts %}

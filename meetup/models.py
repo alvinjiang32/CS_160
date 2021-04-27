@@ -24,14 +24,6 @@ class Profile(models.Model):
             img.save(self.pic.path)
 
 
-class Contact(models.Model):
-    name = models.CharField(max_length=100)
-    email = models.EmailField()
-    subject = models.TextField()
-    def __str(self):
-        return self.name
-
-
 class CreditCard(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     credit_card_number = models.PositiveBigIntegerField(validators=[
@@ -58,22 +50,43 @@ class Wallet(models.Model):
 
 
 class Event(models.Model):
-    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False, unique=True)
-    user = models.ForeignKey(User, related_name='event_owner', on_delete=models.CASCADE)
-    name = models.CharField(max_length=100)
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False,
+                          unique=True)
+    user = models.ForeignKey(User, related_name='event_owner',
+                             on_delete=models.CASCADE)
+    name = models.CharField(max_length=100, help_text="Enter the name of your event")
     location = models.JSONField()
-    date = models.DateField()
+    date = models.DateField(help_text="MM/DD/YYYY")
     price = models.PositiveIntegerField(default=0)
-    max_age = models.PositiveIntegerField(default=100)
-    min_age = models.PositiveIntegerField(default=0)
-    capacity = models.PositiveIntegerField(default=1)
+    max_age = models.PositiveIntegerField(default=70, help_text="Maximum 70", validators=[
+        MinValueValidator(5),
+        MaxValueValidator(70)
+    ])
+    min_age = models.PositiveIntegerField(default=5, help_text="Minimum 5", validators=[
+        MinValueValidator(5),
+        MaxValueValidator(70)
+    ])
+    capacity = models.PositiveIntegerField(help_text="Range 5 - 5000",validators=[
+        MinValueValidator(5),
+        MaxValueValidator(5000)
+    ])
     activity_type = models.CharField(max_length=25)
     description = models.TextField()
     contact_info = models.TextField()
-    attendees = models.ManyToManyField(User, related_name='event_attendees', blank=True)
+    attendees = models.ManyToManyField(User, related_name='event_attendees',
+                                       blank=True)
 
     def __str__(self):
         return f"{self.user}'s Event: {self.name}"
 
     def get_absolute_url(self):
         return reverse('event-detail', kwargs={'pk': self.id})
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=100)
+    email = models.EmailField()
+    subject = models.TextField()
+
+    def __str(self):
+        return self.name

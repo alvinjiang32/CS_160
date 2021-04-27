@@ -1,11 +1,88 @@
 {% extends "meetup/base.html" %}
 {% block content %}
-    <center>
-        <h1>MeetUp!</h1>
-        <p><b>Team Rocket:</b> Kenny Nguyen, Michael Deely, Alvin Jiang, Sam
-                Vuong</p>
-        <p><img
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcStlGjVEHEhzZ8xgRXvZOz4MuKMTICFxz3fyQ&usqp=CAU"
-              alt="Meetup Logo"></p>
-    </center>
+  <div class="jumbotron jumbotron-fluid bg-cover text-white" style="background-image: linear-gradient(to bottom, rgba(0,0,0,0.6) 0%,rgba(0,0,0,0.6) 100%), url(https://www.thehealthy.com/wp-content/uploads/2020/08/GettyImages-1162746409-scaled.jpg); background-size: cover;  background-position: center center">
+    <div class="container">
+      <h1 class="display-3 font-weight-bold">Build lifelong memories</h1>
+      <p class="lead font-weight-bold">Join events, meet new friends, and have a blast &ndash; all through MeetUp!</p>
+        <p class="lead">
+          <a class="btn btn-success btn-lg" href="{% url 'meetup-about' %}" role="button">Learn More</a>
+          {% if not user.is_authenticated %}
+              <a class="btn btn-warning btn-lg text-white" href="{% url 'meetup-register-initial' %}" role="button">Join Today</a>
+          {% endif %}
+        </p>
+    </div>
+  </div>
+
+  <!-- Features Section -->
+   <section class="text-center bg-light">
+      <h1>We Make Things Simple</h1>
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-4">
+            <div class="mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" style="fill:rgba(228, 112, 65, 1);transform:;-ms-filter:"><path d="M18.328 4.258c-1.73-1.417-3.829-2.155-5.949-2.235.411 2.463-.197 5.061-1.835 7.107L12 10.586 18.328 4.258zM7.701 9.115L4.258 5.672C3.12 7.063 2.422 8.69 2.146 10.376 4.051 10.753 6.079 10.328 7.701 9.115zM19.742 5.672L13.414 12l1.456 1.456c2.047-1.638 4.645-2.246 7.107-1.835C21.897 9.501 21.159 7.402 19.742 5.672zM21.854 13.624c-1.904-.377-3.933.048-5.555 1.261l3.443 3.443C20.881 16.938 21.578 15.31 21.854 13.624zM9.115 7.701c1.213-1.622 1.638-3.65 1.261-5.555C8.69 2.422 7.063 3.119 5.672 4.258L9.115 7.701zM13.624 21.854c1.686-.275 3.313-.974 4.704-2.111l-3.443-3.443C13.672 17.921 13.247 19.949 13.624 21.854zM12 13.414l-6.328 6.328c1.73 1.417 3.829 2.155 5.949 2.235-.411-2.463.197-5.061 1.835-7.107L12 13.414zM4.258 18.328L10.586 12 9.13 10.544c-2.047 1.638-4.645 2.246-7.107 1.835C2.103 14.499 2.841 16.598 4.258 18.328z"></path></svg>
+              <h3>Citizen</h3>
+              <p class="lead mb-0">Easily browse our incredible selection of fun events, sign up, and go have fun! Simple as that!
+              </p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" style="fill:rgba(45, 168, 216, 1);transform:;-ms-filter:"><path d="M21,7h-6c-0.553,0-1,0.447-1,1v3h-2V4c0-0.553-0.447-1-1-1H3C2.447,3,2,3.447,2,4v16c0,0.553,0.447,1,1,1h7h1h4h1h5 c0.553,0,1-0.447,1-1V8C22,7.447,21.553,7,21,7z M8,6h2v2H8V6z M6,16H4v-2h2V16z M6,12H4v-2h2V12z M6,8H4V6h2V8z M10,16H8v-2h2V16z M10,12H8v-2h2v1V12z M19,16h-2v-2h2V16z M19,12h-2v-2h2V12z"></path></svg>
+              <h3>Organizer</h3>
+              <p class="lead mb-0">Organize events hassle free. Control every detail. Keep track of who's attending. We'll ensure it's a success!</p>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="mx-auto mb-5 mb-lg-0 mb-lg-3">
+              <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 24 24" style="fill:rgba(87, 196, 120, 1);transform:;-ms-filter:"><path d="M21,4H3C2.447,4,2,4.447,2,5v14c0,0.553,0.447,1,1,1h18c0.553,0,1-0.447,1-1V5C22,4.447,21.553,4,21,4z M20,15 c-1.657,0-3,1.343-3,3H7c0-1.657-1.343-3-3-3V9c1.657,0,3-1.343,3-3h10c0,1.657,1.343,3,3,3V15z"></path><path d="M12,8c-2.206,0-4,1.794-4,4s1.794,4,4,4s4-1.794,4-4S14.206,8,12,8z M12,14c-1.103,0-2-0.897-2-2s0.897-2,2-2s2,0.897,2,2 S13.103,14,12,14z"></path></svg>
+              <h3>Payments</h3>
+              <p class="lead mb-0">Our electronic payment system Robucks makes it easy to carry out transactions in a safe and secure manner.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+   </section>
+
+  <!-- Example Events -->
+  <div class="pricing-header mx-auto text-center mb-4 mt-4">
+    <h1>&#128293; Checkout These Hot Events &#128293;</h1>
+  </div>
+  <div class="container">
+    <div class="card-deck mb-3 text-center">
+      <div class="card mb-4">
+        <div class="card-header bg-primary">
+          <h5 class="my-0 font-weight-bold">NguyenNguyenSituation's Event</h5>
+        </div>
+        <img src="https://123kidsfun.com/wp-content/uploads/2018/04/pexels-photo-707193.jpeg" class="card-img-top" alt="Coloring">
+        <div class="card-body">
+          <h5 class="card-title font-italic">Coloring Therapy</h5>
+          <p class="card-text">Relax and unwind by coloring this Saturday at the Edenvale Community Center! Children and adults welcomed! :)</p>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header bg-warning">
+          <h5 class="my-0 font-weight-bold">GaryTheSnail's Event</h5>
+        </div>
+        <img src="https://aauboysbasketball.org/news_images/org_3865/Image/photo_for_easter_classic.jpg" class="card-img-top" alt="Basketball">
+        <div class="card-body">
+          <h5 class="card-title font-italic">All American Basketball Tournament</h5>
+          <p class="card-text">The All American Basketball Tournament is an intense basketball team event for kids aged 12 to 15 in Oakland, CA.
+                               Games will be played in a 5v5 format and playing time is not guaranteed</p>
+        </div>
+      </div>
+      <div class="card mb-4">
+        <div class="card-header bg-success">
+          <h5 class="my-0 font-weight-bold">Michael_Deely's Event</h5>
+        </div>
+        <img src="https://img.beritasatu.com/cache/jakartaglobe/960x620-4/2018/03/Roots-Mel1.jpg" class="card-img-top" alt="Poetry">
+        <div class="card-body">
+          <h5 class="card-title font-italic">Poetry Blast: Noon Poems</h5>
+          <p class="card-text">Take a few minutes to listen to a poem! Join the hundreds of readers, students, teachers, librarians, booksellers, publishers, families, and, of course, poets,
+                               in marking poetry's important place in our lives. Every weekday at noon this April will feature a poet reading one of their poems. </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
 {% endblock content %}
