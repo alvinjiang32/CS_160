@@ -25,7 +25,7 @@
 		var str2 = "&callback=initMap&libraries=&v=weekly";
 		var api = new String("{{api_key}}");
 		var api_link = str1.concat(api, str2);
-
+	<!-- Async script to load Maps API -->
 		var scriptElement = document.createElement("script");
 		scriptElement.src = api_link;
 		scriptElement.async = "";
