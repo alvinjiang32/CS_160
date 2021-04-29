@@ -270,11 +270,23 @@ def events(request):
                 return redirect("meetup-register-initial")
             else:
                 event = form.cleaned_data.get('name').first()
-                people = event.attendees.all()
                 current = User.objects.filter(username=request.user).first()
-                event.attendees.set(people)
-                event.attendees.add(current)
-                messages.success(request, "Registered for event!")
+                # Check if user is already registered for this event
+                attendees = event.attendees.all()
+                if attendees.filter(id=current.pk).exists():
+                    messages.warning(request, 'Already registered!')
+                else:
+                    user_wallet = Wallet.objects.filter(user=current).first()
+                    # Check if user has sufficient funds
+                    if user_wallet.balance >= event.price:
+                        user_wallet.balance -= event.price
+                        user_wallet.save()
+                        people = event.attendees.all()
+                        event.attendees.set(people)
+                        event.attendees.add(current)
+                        messages.success(request, "Registered for event!")      
+                    else:
+                        messages.warning(request, 'Not enough money!')
             return redirect("meetup-events")
     # api_key_string = [k for k, v in locals().items() if v ==
     # settings.GOOGLE_MAPS_API_KEY][0]
@@ -286,7 +298,12 @@ def events(request):
 
 class EventDetailView(DetailView):
     model = Event
-
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['attendees_list'] = list(self.object.attendees.all())
+        context['is_organizer'] = self.request.user.groups.all().filter(name='Organizer').exists()
+        return context
 
 class EventCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Event
@@ -318,6 +335,10 @@ class EventUpdateView(SuccessMessageMixin, LoginRequiredMixin,
     model = Event
     fields = ['name', 'location', 'date', 'price', 'max_age', 'min_age',
               'capacity', 'activity_type', 'description', 'contact_info']
+              
+    def __init__(self):
+        super().__init__()
+        self.template_name_suffix = "_create"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -368,7 +389,8 @@ def send_coords(request):
     # }
     data = ''
     if request.method == 'GET':
-        data = list(Event.objects.all().values_list('location'))
+        data = list(Event.objects.all().values_list('location', 'name', 'user__first_name', 'date', 'price', 'max_age', \
+        'min_age', 'capacity', 'activity_type', 'description', 'contact_info', 'attendees'))
         # qs = Event.objects.all().values_list('location')
         # qs_json = serializers.serialize('json', qs)
     return JsonResponse(data, safe=False)

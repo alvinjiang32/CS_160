@@ -5,6 +5,15 @@
 
 {% block header_scripts %}
 	<script src="{% static 'meetup/googleMap.js' %}"></script>
+	<script>
+		function alertPayment() {
+			var res = confirm("Are you sure you want to pay the fee?");
+			if (res) {
+				return true;
+			}
+			else return false;
+		}
+	</script>
 {% endblock header_scripts %}
 
 {% block content %}
@@ -14,7 +23,7 @@
 		{% csrf_token %}
 		{{ form|crispy }}
 		{% if user|has_group:"Citizen" or not user.is_authenticated %}
-			<button class="btn btn-outline-info" type="submit">Register For Event</button>
+			<button class="btn btn-outline-info" type="submit" onclick="return alertPayment()">Register For Event</button>
 		{% endif %}
 	</form>
 	<!-- Div element for Google Map -->
