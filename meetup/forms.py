@@ -126,3 +126,4 @@ class RegisterEventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['name']
+        
