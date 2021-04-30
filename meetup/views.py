@@ -135,7 +135,7 @@ def contact(request):
         contact.name = name
         contact.email = email
         contact.subject = subject
-        contact.save()
+        #contact.save()
         messages.success(request, f"Thank you {contact.name}, "
                                   f"we will be contact with you shortly!")
         return redirect('meetup-home')

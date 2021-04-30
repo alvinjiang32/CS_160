@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from dotenv import load_dotenv
+
 from pathlib import Path
 load_dotenv()
 
@@ -24,13 +25,13 @@ SESSION_COOKIE_SCURE = True
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY ="hb2qyn7be9-jqu4*i5*&-f-@#d^mra%n1o$m#4=_qk_0c(f2#t"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 # GOOGLE MAPS API KEY
-GOOGLE_MAPS_API_KEY = os.environ.get("GOOGLE_MAPS_API_KEY")
+GOOGLE_MAPS_API_KEY ="AIzaSyBCeA7xJemPCf-VQV_JpxSMiatQIych_YM"
 
 ALLOWED_HOSTS = ["meetup-160.herokuapp.com"]
 
