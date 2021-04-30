@@ -31,10 +31,12 @@
                         <th scope="col">Activity:</th>
                         <td scope="row">{{ object.activity_type }}</td>
                     </tr>
+					{% if is_organizer %}
                     <tr>
                         <th scope="col">Attendees:</th>
-                        <td scope="row">{{ object.attendees }}</td>
+                        <td scope="row">{{ attendees_list }}</td>
                     </tr>
+					{% endif %}
                     <tr>
                         <th scope="col">Contact Details:</th>
                         <td scope="row">{{ object.contact_info }}</td>

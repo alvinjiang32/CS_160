@@ -12,6 +12,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.conf import settings
+import itertools
+import functools
 
 
 def get_citizen_group():
@@ -150,8 +152,21 @@ def logout_user(request):
 
 @login_required(login_url='meetup-login')
 def profile(request):
+    list_cc = list(CreditCard.objects.filter(user=request.user).values_list('credit_card_number', flat=True))
+    # Conceal digits except for last 4
+    res_list = []
+    for cc_num in list_cc:
+        stringified = str(cc_num)
+        test_list = range(0, len(stringified) - 4)
+        repl_char = '*'
+        temp = list(stringified)
+        res = [repl_char if idx in test_list else ele for idx, ele in enumerate(temp)]
+        res = ''.join(res)
+        res_list.append(res)
     context = {'title': f"{request.user}'s Profile",
                'robucks': Wallet.objects.get(user=request.user).balance,
+               'counter': functools.partial(next, itertools.count()),
+               'numbers': res_list,
                'credit_cards': CreditCard.objects.filter(user=request.user)}
 
     if request.user.groups.filter(name='Citizen').exists():
@@ -270,11 +285,23 @@ def events(request):
                 return redirect("meetup-register-initial")
             else:
                 event = form.cleaned_data.get('name').first()
-                people = event.attendees.all()
                 current = User.objects.filter(username=request.user).first()
-                event.attendees.set(people)
-                event.attendees.add(current)
-                messages.success(request, "Registered for event!")
+                # Check if user is already registered for this event
+                attendees = event.attendees.all()
+                if attendees.filter(id=current.pk).exists():
+                    messages.warning(request, 'Already registered!')
+                else:
+                    user_wallet = Wallet.objects.filter(user=current).first()
+                    # Check if user has sufficient funds
+                    if user_wallet.balance >= event.price:
+                        user_wallet.balance -= event.price
+                        user_wallet.save()
+                        people = event.attendees.all()
+                        event.attendees.set(people)
+                        event.attendees.add(current)
+                        messages.success(request, "Registered for event!")      
+                    else:
+                        messages.warning(request, 'Not enough money!')
             return redirect("meetup-events")
     # api_key_string = [k for k, v in locals().items() if v ==
     # settings.GOOGLE_MAPS_API_KEY][0]
@@ -286,7 +313,12 @@ def events(request):
 
 class EventDetailView(DetailView):
     model = Event
-
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['attendees_list'] = list(self.object.attendees.all())
+        context['is_organizer'] = self.request.user.groups.all().filter(name='Organizer').exists()
+        return context
 
 class EventCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Event
@@ -318,6 +350,10 @@ class EventUpdateView(SuccessMessageMixin, LoginRequiredMixin,
     model = Event
     fields = ['name', 'location', 'date', 'price', 'max_age', 'min_age',
               'capacity', 'activity_type', 'description', 'contact_info']
+              
+    def __init__(self):
+        super().__init__()
+        self.template_name_suffix = "_create"
     
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -368,7 +404,8 @@ def send_coords(request):
     # }
     data = ''
     if request.method == 'GET':
-        data = list(Event.objects.all().values_list('location'))
+        data = list(Event.objects.all().values_list('location', 'name', 'user__first_name', 'date', 'price', 'max_age', \
+        'min_age', 'capacity', 'activity_type', 'description', 'contact_info', 'attendees'))
         # qs = Event.objects.all().values_list('location')
         # qs_json = serializers.serialize('json', qs)
     return JsonResponse(data, safe=False)
