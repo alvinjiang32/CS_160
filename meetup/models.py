@@ -9,7 +9,7 @@ import uuid
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE,
                                 primary_key=True)
-    pic = models.ImageField(default='default_clgkyl.png', upload_to='profile_pics')
+    pic = models.ImageField(default='default_clgkyl', upload_to='profile_pics')
 
     def __str__(self):
         return f"{self.user}'s Profile"
