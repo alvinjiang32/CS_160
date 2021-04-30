@@ -12,6 +12,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
 from django.conf import settings
+import itertools
+import functools
 
 
 def get_citizen_group():
@@ -150,8 +152,21 @@ def logout_user(request):
 
 @login_required(login_url='meetup-login')
 def profile(request):
+    list_cc = list(CreditCard.objects.filter(user=request.user).values_list('credit_card_number', flat=True))
+    # Conceal digits except for last 4
+    res_list = []
+    for cc_num in list_cc:
+        stringified = str(cc_num)
+        test_list = range(0, len(stringified) - 4)
+        repl_char = '*'
+        temp = list(stringified)
+        res = [repl_char if idx in test_list else ele for idx, ele in enumerate(temp)]
+        res = ''.join(res)
+        res_list.append(res)
     context = {'title': f"{request.user}'s Profile",
                'robucks': Wallet.objects.get(user=request.user).balance,
+               'counter': functools.partial(next, itertools.count()),
+               'numbers': res_list,
                'credit_cards': CreditCard.objects.filter(user=request.user)}
 
     if request.user.groups.filter(name='Citizen').exists():
