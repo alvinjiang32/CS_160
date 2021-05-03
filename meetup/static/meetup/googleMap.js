@@ -77,6 +77,10 @@ function initMap() {
 		geocodeAndFind(geocoder, map);
   });
   }
+  
+  if (lastSeg == 'events') {
+	  document.getElementById('search').click();
+  } 
   //console.log("Inside boxes");
   //console.log(allMarkers);
   // Create info boxes at all markers;

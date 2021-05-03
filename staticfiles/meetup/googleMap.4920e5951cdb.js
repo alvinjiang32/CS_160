@@ -94,8 +94,7 @@ function createBoxes(item, map, title, eventOwner, eventDate, eventPrice, eventM
     '<div id="siteNotice">' +
     "</div>" +
     '<h1 id="firstHeading" class="firstHeading">' + title + '</h1>' +
-	'<h4 id="secondHeading" class="secondHeading">Hosted by: ' + eventOwner +
-	'</h4>' +
+	'<h2 id="secondHeading" class="secondHeading">Hosted by: ' + eventOwner + '</h2>' +
     '<div id="bodyContent" style="width: 500px;">' +
     '<p><b>Date: </b>' + eventDate + '</p>' +
     '<p><b>Price: </b>' + eventPrice + '</p>' +

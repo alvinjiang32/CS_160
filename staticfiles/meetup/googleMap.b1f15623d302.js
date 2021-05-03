@@ -13,6 +13,9 @@ function initMap() {
     center: sjsu,
   });
   var marker;
+  if (lastSeg == 'events') {
+	  document.getElementById("search").click();
+  } 
   // Create a starting marker if webpage is currently for creating events
   if (lastSeg == 'create') {
 	  marker = new google.maps.Marker({
@@ -77,10 +80,6 @@ function initMap() {
 		geocodeAndFind(geocoder, map);
   });
   }
-  
-  if (lastSeg == 'events') {
-	  document.getElementById('search').click();
-  } 
   //console.log("Inside boxes");
   //console.log(allMarkers);
   // Create info boxes at all markers;
@@ -94,8 +93,7 @@ function createBoxes(item, map, title, eventOwner, eventDate, eventPrice, eventM
     '<div id="siteNotice">' +
     "</div>" +
     '<h1 id="firstHeading" class="firstHeading">' + title + '</h1>' +
-	'<h4 id="secondHeading" class="secondHeading">Hosted by: ' + eventOwner +
-	'</h4>' +
+	'<h2 id="secondHeading" class="secondHeading">Hosted by: ' + eventOwner + '</h2>' +
     '<div id="bodyContent" style="width: 500px;">' +
     '<p><b>Date: </b>' + eventDate + '</p>' +
     '<p><b>Price: </b>' + eventPrice + '</p>' +
