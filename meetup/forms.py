@@ -108,7 +108,7 @@ class PaymentForm(forms.Form):
 class CreateEventForm(ModelForm):
     date = forms.DateField(label='Date',
                            widget=forms.TextInput(attrs={'placeholder':
-                                                             'MM/DD/YYYY'}))
+                                                        'MM/DD/YYYY'}))
     name = forms.CharField(label='Event Name')
     attendees = forms.CharField()
 
@@ -126,4 +126,3 @@ class RegisterEventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['name']
-        
