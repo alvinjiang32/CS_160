@@ -58,13 +58,26 @@ input[type=number] {
 }
 
 /* Footer */
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 280px; /* Margin bottom by footer height */
+}
+
 .site-footer
 {
   background-color:#26272b;
   padding:35px 0 20px;
   font-size:15px;
   line-height:24px;
+  height: auto;
   color:#737373;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .site-footer hr {
