@@ -6,8 +6,7 @@ from .models import *
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, \
-    DeleteView
+from django.views.generic import DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import JsonResponse
@@ -48,7 +47,7 @@ def register_citizen(request):
         form = RegisterCitizenForm(request.POST)
         if form.is_valid():
             form.save()  # Creates User. User's Profile and Wallet created
-                         # automatically
+            # automatically
             name = form.cleaned_data.get('username')
             user = User.objects.filter(username=name).first()
             user.groups.add(
@@ -152,7 +151,8 @@ def logout_user(request):
 
 @login_required(login_url='meetup-login')
 def profile(request):
-    list_cc = list(CreditCard.objects.filter(user=request.user).values_list('credit_card_number', flat=True))
+    list_cc = list(CreditCard.objects.filter(user=request.user).values_list(
+        'credit_card_number', flat=True))
     # Conceal digits except for last 4
     res_list = []
     for cc_num in list_cc:
@@ -160,7 +160,8 @@ def profile(request):
         test_list = range(0, len(stringified) - 4)
         repl_char = '*'
         temp = list(stringified)
-        res = [repl_char if idx in test_list else ele for idx, ele in enumerate(temp)]
+        res = [repl_char if idx in test_list else ele for idx, ele in
+               enumerate(temp)]
         res = ''.join(res)
         res_list.append(res)
     context = {'title': f"{request.user}'s Profile",
@@ -299,12 +300,11 @@ def events(request):
                         people = event.attendees.all()
                         event.attendees.set(people)
                         event.attendees.add(current)
-                        messages.success(request, "Registered for event!")      
+                        messages.success(request, "Registered for event!")
                     else:
                         messages.warning(request, 'Not enough money!')
             return redirect("meetup-events")
-    # api_key_string = [k for k, v in locals().items() if v ==
-    # settings.GOOGLE_MAPS_API_KEY][0]
+
     context = {'form': form,
                "title": "Explore Events",
                "api_key": settings.GOOGLE_MAPS_API_KEY}
@@ -313,17 +313,19 @@ def events(request):
 
 class EventDetailView(DetailView):
     model = Event
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['attendees_list'] = list(self.object.attendees.all())
-        context['is_organizer'] = self.request.user.groups.all().filter(name='Organizer').exists()
+        context['is_organizer'] = \
+            self.request.user.groups.all().filter(name='Organizer').exists()
         return context
+
 
 class EventCreateView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = Event
-    fields = ['name', 'location','date', 'price', 'max_age', 'min_age', 'capacity',
-              'activity_type', 'description', 'contact_info']
+    fields = ['name', 'location', 'date', 'price', 'max_age', 'min_age',
+              'capacity', 'activity_type', 'description', 'contact_info']
 
     def __init__(self):
         super().__init__()
@@ -350,11 +352,11 @@ class EventUpdateView(SuccessMessageMixin, LoginRequiredMixin,
     model = Event
     fields = ['name', 'location', 'date', 'price', 'max_age', 'min_age',
               'capacity', 'activity_type', 'description', 'contact_info']
-              
+
     def __init__(self):
         super().__init__()
         self.template_name_suffix = "_create"
-    
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['api_key'] = settings.GOOGLE_MAPS_API_KEY
@@ -396,17 +398,13 @@ class EventDeleteView(SuccessMessageMixin, LoginRequiredMixin,
 
 
 def send_coords(request):
-    # data = request.POST
-    # coords = request.POST.get('coords')
-    # data = json.loads(request.POST.get('coords'))
-    # data = {
-    #  'sent': coords
-    # }
-    data = ''
     if request.method == 'GET':
-        data = list(Event.objects.all().values_list('location', 'name', 'user__first_name', 'date', 'price', 'max_age', \
-        'min_age', 'capacity', 'activity_type', 'description', 'contact_info', 'attendees'))
-        # qs = Event.objects.all().values_list('location')
-        # qs_json = serializers.serialize('json', qs)
+        data = list(Event.objects.all().values_list('location', 'name',
+                                                    'user__first_name', 'date',
+                                                    'price', 'max_age',
+                                                    'min_age', 'capacity',
+                                                    'activity_type',
+                                                    'description',
+                                                    'contact_info',
+                                                    'attendees'))
     return JsonResponse(data, safe=False)
-    # return HttpResponse(qs_json, content_type="application/json")

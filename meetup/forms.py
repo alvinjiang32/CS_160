@@ -105,20 +105,6 @@ class PaymentForm(forms.Form):
         )
 
 
-class CreateEventForm(ModelForm):
-    date = forms.DateField(label='Date',
-                           widget=forms.TextInput(attrs={'placeholder':
-                                                             'MM/DD/YYYY'}))
-    name = forms.CharField(label='Event Name')
-    attendees = forms.CharField()
-
-    class Meta:
-        model = Event
-        fields = ['user', 'name', 'location', 'date', 'price',
-                  'max_age', 'min_age', 'capacity', 'activity_type',
-                  'description', 'contact_info', 'attendees']
-
-
 class RegisterEventForm(ModelForm):
     name = forms.ModelMultipleChoiceField(label='Select An Event',
                                           queryset=Event.objects.all())
@@ -126,4 +112,3 @@ class RegisterEventForm(ModelForm):
     class Meta:
         model = Event
         fields = ['name']
-        

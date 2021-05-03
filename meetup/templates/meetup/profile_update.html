@@ -1,6 +1,7 @@
 {% extends "meetup/base.html" %}
 {% load crispy_forms_tags %}
 {% block content %}
+    <br>
     <center>
         <img class="rounded-circle account-img" src="{{ user.profile.pic.url }}" width="200" height="200">
         <h2>{{ user.username }}</h2>
@@ -19,11 +20,12 @@
                 <button class="btn btn-outline-warning" type="submit">Update</button>
             </div>
         </form>
-        <div class="border-top pt-3">
+        <div class="border-top pt-2">
             <small class="text-muted">
                     <a class="ml-2" href="{% url 'meetup-password-change' %}">Need To Change Password?</a>
             </small>
         </div>
+        <br>
     </div>
 
 {% endblock content %}

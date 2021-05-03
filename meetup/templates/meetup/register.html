@@ -1,9 +1,10 @@
 {% extends 'meetup/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <div class="content-section container">
+    <div class="container">
         <form method="POST">
             {% csrf_token %} <!-- token required for forms in Django -->
+            <br>
             <fieldset class="form-group">
                 {% if form.last_name %} <!-- Citizen Form -->
                     <legend class="border-bottom mb-4">Create A Citizen Account</legend>
@@ -15,11 +16,11 @@
                 <small><p style="text-align:left;">* = required field</p></small>
                 {{ form|crispy }}
             </fieldset>
-            <div class="form-group">
+            <div>
                 <button class="btn btn-outline-info" type="submit">Sign Up</button>
             </div>
         </form>
-        <div class="border-top pt-3">
+        <div class="border-top pt-2">
             <small class="text-muted">
                 {% if form.first_name %}
                     Already Have An Account? <a class="ml-2" href="{% url 'meetup-login' %}">Sign In</a>
@@ -28,5 +29,6 @@
                 {% endif %}
             </small>
         </div>
+        <br>
     </div>
 {% endblock content %}

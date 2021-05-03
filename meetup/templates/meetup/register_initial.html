@@ -1,21 +1,19 @@
 {% extends 'meetup/base.html' %}
-{% load crispy_forms_tags %}
 {% block content %}
-    <div class="content-section">
-        <center><h1>Register An Account</h1></center>
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4" align="center">Create What Kind of Account?</legend>
-        </fieldset>
-        <div class="form-group" align="center">
-            <a href="{% url 'meetup-register-citizen' %}"> <button class="btn btn-primary" type="submit">Citizen</button></a>
-            <a href="{% url 'meetup-register-organizer' %}"> <button class="btn btn-danger" type="submit">Organizer</button></a>
-        </div>
-        <!--
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                 <a class="ml-2" href="{% url 'meetup-register-admin' %}">Create Admin Account</a>
-            </small>
-        </div>
-        -->
+<div class="content-section" style="min-height: 400px">
+    <br><br><br><br>
+    <center><h1>Register An Account</h1></center>
+    <br>
+    <div align="center">
+        <a href="{% url 'meetup-register-citizen' %}"><button class="btn btn-primary" type="submit">Citizen</button></a>
+        <a href="{% url 'meetup-register-organizer' %}"><button class="btn btn-danger" type="submit">Organizer</button></a>
     </div>
+    <!--
+    <div class="border-top pt-3">
+        <small class="text-muted">
+             <a class="ml-2" href="{% url 'meetup-register-admin' %}">Create Admin Account</a>
+        </small>
+    </div>
+    -->
+</div>
 {% endblock content %}

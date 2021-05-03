@@ -17,53 +17,99 @@
 	{% block header_scripts %}{% endblock %}
 	
     {% if title %}
-        <title>Meetup! - {{ title }}</title>
+        <title>MeetUp! - {{ title }}</title>
     {% else %}
-        <title>Meetup!</title>
+        <title>MeetUp!</title>
     {% endif %}
 </head>
+<body>
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><h2 style="color:white; font-family:'Garamond'; padding-top:7px; padding-right:15px; padding-left: 0px">MeetUp!</h2></li>
+            <li><a href="{% url 'meetup-home' %}">Home</a></li>
+            <li><a href="{% url 'meetup-about' %}">About</a></li>
+            <li><a href="{% url 'meetup-events' %}">Explore Events</a></li>
 
-<!-- Navigation Bar -->
-<nav>
-    <ul>
-        <li><a href="{% url 'meetup-home' %}">Home</a></li>
-        <li><a href="{% url 'meetup-about' %}">About</a></li>
-        <li><a href="{% url 'meetup-events' %}">Explore Events</a></li>
-
-
-        {% if user.is_authenticated %}
-            {% load meetup_tags %}
-            {% if user|has_group:"Organizer" %}
-                <li><a href="{% url 'event-create' %}">Create Event</a></li>
+            {% if user.is_authenticated %}
+                {% load meetup_tags %}
+                {% if user|has_group:"Organizer" %}
+                    <li><a href="{% url 'event-create' %}">Create Event</a></li>
+                {% endif %}
+                <li style="float:right"><a href="{% url 'meetup-logout' %}">Logout</a></li>
+                {% get_wallet user=user as wallet %}
+                <li style="float:right"><a href="{% url 'meetup-wallet' %}">Robucks: {{ wallet.balance }} </a></li>
+                <li style="float:right"><a href="{% url 'meetup-profile' %}">{{ user.username }}</a></li>
+            {% else %}
+                <li style="float:right"><a href="{% url 'meetup-register-initial' %}">Register</a></li>
+                <li style="float:right"><a href="{% url 'meetup-login' %}">Login</a></li>
             {% endif %}
-            <li style="float:right"><a href="{% url 'meetup-logout' %}">Logout</a></li>
-            {% get_wallet user=user as wallet %}
-            <li style="float:right"><a href="{% url 'meetup-wallet' %}">Robucks: {{ wallet.balance }} </a></li>
-            <li style="float:right"><a href="{% url 'meetup-profile' %}">{{ user.username }}</a></li>
-        {% else %}
-            <li style="float:right"><a href="{% url 'meetup-register-initial' %}">Register</a></li>
-            <li style="float:right"><a href="{% url 'meetup-login' %}">Login</a></li>
-        {% endif %}
-          <li><a href="{% url 'meetup-contact' %}">Contact Us</a></li>
-    </ul>
-</nav>
+              <li><a href="{% url 'meetup-contact' %}">Contact Us</a></li>
+        </ul>
+    </nav>
 
-{% if messages %}
-    {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-            {{ message }}
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock content %}
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <h6>Our Mission</h6>
+            <p>
+               MeetUp! is a recreational system for a smart city,
+                which will help citizens choose various activities for them or their children. Their choice will be
+                made based on various criteria, such as age (for example preschool, grades 9-12, adults, seniors),
+                type of activity (for example sports, arts), proximity to the venue (for example at a distance
+                of up to 5 miles), its cost, dates and time, etc.
+            </p>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <h6>Socials</h6>
+            <ul class="footer-links">
+              <li><a href="https://facebook.com">Facebook</a></li>
+              <li><a href="https://twitter.com">Twitter</a></li>
+              <li><a href="https://instagram.com">Instagram</a></li>
+              <li><a href="https://www.pinterest.com/cannondesign/recreation-and-wellness-buildings/">Pinterest</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <h6>Quick Links</h6>
+            <ul class="footer-links">
+                <li><a href="{% url 'meetup-home' %}">Home</a></li>
+                <li><a href="{% url 'meetup-about' %}">About Us</a></li>
+                <li><a href="{% url 'meetup-events' %}">Explore Events</a></li>
+                <li><a href="{% url 'meetup-contact' %}">Contact Us</a></li>
+            </ul>
+          </div>
         </div>
-    {% endfor %}
-{% endif %}
+        <hr>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-sm-6 col-xs-12">
+            <p class="copyright-text">&copy; Copyright Team Rocket 2021</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <!-- Block for any scripts to be included after content elements -->
+    {% block footer_scripts %}{% endblock %}
 
-{% block content %}{% endblock %}
-
-<!-- Block for any scripts to be included after content elements -->
-{% block footer_scripts %}{% endblock %}
-
-<!-- JavaScript for Bootstrap -->
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    <!-- JavaScript for Bootstrap -->
+    <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
 </html>

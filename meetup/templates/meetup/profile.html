@@ -4,6 +4,7 @@
 {% block content %}
     <center>
         <div>
+            <br>
             <img class="rounded-circle account-img" src="{{ user.profile.pic.url }}" width="200" height="200">
             <h2>{{ user.username }}</h2>
             {% for group in user.groups.all %}
@@ -18,7 +19,7 @@
 
             <h3>My Wallet</h3>
             <h5> Robucks: {{ robucks }} </h5>
-            <a href="{% url 'meetup-payment' %}"><button class="btn btn-success" type="submit">Add</button></a>
+            <a href="{% url 'meetup-payment' %}"><button class="btn btn-outline-success" type="submit">Add</button></a>
             <hr>
 
             <h3 class="mb-3">My Credit Cards</h3>
@@ -34,7 +35,6 @@
                       <p class="card-text">CVC: {{ credit_card.cvc_code}}</p>
                   </div>
                 </div>
-            <br>
             {% endfor %}
             <a href="{% url 'meetup-credit-card' %}"><button class="btn btn-outline-info" type="submit">Add Card</button></a>
             <hr>
@@ -59,4 +59,5 @@
             {% endif %}
         </div>
     </center>
+    <br>
 {% endblock content %}
