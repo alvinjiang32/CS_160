@@ -13,6 +13,9 @@ function initMap() {
     center: sjsu,
   });
   var marker;
+  if (lastSeg == 'events') {
+	  document.getElementById("search").click();
+  } 
   // Create a starting marker if webpage is currently for creating events
   if (lastSeg == 'create') {
 	  marker = new google.maps.Marker({
@@ -77,10 +80,6 @@ function initMap() {
 		geocodeAndFind(geocoder, map);
   });
   }
-  
-  if (lastSeg == 'events') {
-	  document.getElementById('search').click();
-  } 
   //console.log("Inside boxes");
   //console.log(allMarkers);
   // Create info boxes at all markers;

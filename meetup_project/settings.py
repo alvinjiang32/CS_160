@@ -28,7 +28,7 @@ SESSION_COOKIE_SCURE = True
 SECRET_KEY ="hb2qyn7be9-jqu4*i5*&-f-@#d^mra%n1o$m#4=_qk_0c(f2#t"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 # GOOGLE MAPS API KEY
 GOOGLE_MAPS_API_KEY ="AIzaSyBCeA7xJemPCf-VQV_JpxSMiatQIych_YM"
