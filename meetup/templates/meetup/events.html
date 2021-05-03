@@ -33,9 +33,11 @@
 		<input id="address" type="textbox" value="Enter location" />
 		<input id="search" type="button" value="Find events" />
 	</div>
+
 {% endblock content %}
 
 {% block footer_scripts %}
+
 	<script>
 		var str1 = "https://maps.googleapis.com/maps/api/js?key=";
 		var str2 = "&callback=initMap&libraries=&v=weekly";
@@ -48,4 +50,6 @@
 		document.head.appendChild(scriptElement);
 		const loc = document.getElementById('id_location')
 	</script>
+
+
 {% endblock footer_scripts %}

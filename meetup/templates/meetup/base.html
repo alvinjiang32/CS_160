@@ -56,8 +56,156 @@
     {% endfor %}
 {% endif %}
 
+
 {% block content %}{% endblock %}
 
+<style>
+.site-footer
+{
+  background-color:#26272b;
+  padding:45px 0 20px;
+  font-size:15px;
+  line-height:24px;
+  color:#737373;
+}
+.site-footer hr
+{
+  border-top-color:#bbb;
+  opacity:0.5
+}
+.site-footer hr.small
+{
+  margin:20px 0
+}
+.site-footer h6
+{
+  color:#fff;
+  font-size:16px;
+  text-transform:uppercase;
+  margin-top:5px;
+  letter-spacing:2px
+}
+.site-footer a
+{
+  color:#737373;
+}
+.site-footer a:hover
+{
+  color:#3366cc;
+  text-decoration:none;
+}
+.footer-links
+{
+  padding-left:0;
+  list-style:none
+}
+.footer-links li
+{
+  display:block
+}
+.footer-links a
+{
+  color:#737373
+}
+.footer-links a:active,.footer-links a:focus,.footer-links a:hover
+{
+  color:#3366cc;
+  text-decoration:none;
+}
+.footer-links.inline li
+{
+  display:inline-block
+}
+.site-footer .social-icons
+{
+  text-align:right
+}
+.site-footer .social-icons a
+{
+  width:40px;
+  height:40px;
+  line-height:40px;
+  margin-left:6px;
+  margin-right:0;
+  border-radius:100%;
+  background-color:#33353d
+}
+.copyright-text
+{
+  margin:0
+}
+@media (max-width:991px)
+{
+  .site-footer [class^=col-]
+  {
+    margin-bottom:30px
+  }
+}
+@media (max-width:767px)
+{
+  .site-footer
+  {
+    padding-bottom:0
+  }
+  .site-footer .copyright-text,.site-footer .social-icons
+  {
+    text-align:center
+  }
+}
+
+
+</style>
+  <!-- Site footer -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-6">
+            <h6>Our Purpose</h6>
+            <p>
+               The purpose of this project is to develop an online platform of a recreation system for a smart city,
+                which will help citizens choose various activities for them or their children. Their choice will be
+                made based on various criteria, such as age (for example preschool, grades 9-12, adults, seniors),
+                type of activity (for example sports, arts), proximity to the venue (for example at a distance
+                of up to 5 miles), its cost, dates and time, etc.</p>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <h6>Socials</h6>
+            <ul class="footer-links">
+              <li><a href="https://facebook.com">Facebook</a></li>
+              <li><a href="https://twitter.com">Twitter</a></li>
+              <li><a href="https://instagram.com">Instagram</a></li>
+              <li><a href="https://www.pinterest.com/cannondesign/recreation-and-wellness-buildings/">Pinterest</a></li>
+            </ul>
+          </div>
+
+          <div class="col-xs-6 col-md-3">
+            <h6>Quick Links</h6>
+            <ul class="footer-links">
+               <li><a href="{% url 'meetup-login' %}">Log In</a></li>
+                <li><a href="{% url 'meetup-register-initial' %}">Register</a></li>
+              <li><a href="{% url 'meetup-about' %}">About Us</a></li>
+              <li><a href="{% url 'meetup-contact' %}">Contact Us</a></li>
+              <li><a href="{% url 'meetup-events' %}">Explore Events</a></li>
+            </ul>
+            </ul>
+          </div>
+        </div>
+        <hr>
+      </div>
+      <div class="container">
+        <div class="row">
+          <div class="col-md-8 col-sm-6 col-xs-12">
+            <p class="copyright-text">
+
+            </p>
+          </div>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+</footer>
 <!-- Block for any scripts to be included after content elements -->
 {% block footer_scripts %}{% endblock %}
 
