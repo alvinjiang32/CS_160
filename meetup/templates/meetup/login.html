@@ -1,8 +1,8 @@
 {% extends 'meetup/base.html' %}
 {% load crispy_forms_tags %}
 {% block content %}
-    <h3 class="text-center">Log In</h3>
-    <div class="container">
+    <div class="container" style="min-height: 400px">
+        <br><h1 class="text-center">Login</h1>
         <small><p style="text-align:left;">* = required field</p></small>
         <form method="POST">
             {% csrf_token %} <!-- token required for forms in Django -->
@@ -14,11 +14,12 @@
             <br><br>
             <button class="btn btn-outline-info" type="submit">Login</button>
         </form>
-        <div class="border-top pt-3">
+        <div class="border-top pt-2">
             <small class="text-muted">
                 Don't Have An Account? <a class="ml-2" href="{% url 'meetup-register-initial' %}">Register</a><br>
                 Have An Admin Account? <a class="ml-2" href="{% url 'admin:index' %}">Sign In</a>
             </small>
         </div>
     </div>
+    <br>
 {% endblock content %}

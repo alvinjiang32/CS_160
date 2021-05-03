@@ -1,70 +1,64 @@
 {% extends "meetup/base.html" %}
 {% block content %}
 
-<html lang="en">
-<head>
-  <title>About Us</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-</head>
-<body>
+<div class="container" style="margin: 10px auto; text-align: center">
+    <h2>The Objective</h2>
+    <p style="text-align:justify; text-justify: inter-word;">
+        The purpose of this web application is to develop an online
+        recreation system for a smart city, which will help citizens
+        choose various activities for them or their children. Their
+        choice will be made based on various criteria, such as age
+        (for example preschool, grades 9-12, adults, seniors), type of
+        activity (for example sports, arts), proximity to the venue
+        (for example at a distance of up to 5 miles), its cost, dates
+        and time, etc.
+    </p>
+    <img align="center" src="https://www.uab.edu/reporter/images/images/2nd-TKR-montaigne-covid-animation-.gif">
 
-
-<div>&nbsp;</div>
-<div style="margin: 0 auto;text-align:center;width:75%">
-  <div>
-        <h2>The Objective</h2>
-        <p>
-            The purpose of this project is to develop an online platform of a
-            recreation system for a smart city, which will help citizens
-            choose various activities for them or their children. Their
-            choice will be made based on various criteria, such as age
-            (for example preschool, grades 9-12, adults, seniors), type of
-            activity (for example sports, arts), proximity to the venue
-            (for example at a distance of up to 5 miles), its cost, dates
-            and time, etc.
-        </p>
-        <img align="center" src="https://www.uab.edu/reporter/images/images/2nd-TKR-montaigne-covid-animation-.gif">
-
-        <h2>What You'll Need</h2>
+    <h2>What You'll Need</h2>
+    <ol style="text-align:center;">
         <li>An Account</li>
         <li>A Credit Card</li>
         <li>10 Minutes</li>
-        <img align="center" src="https://cliply.co/wp-content/uploads/2019/08/371908930_CREDIT_CARD_400px.gif">
+    </ol>
+    <img align="center" src="https://i.imgur.com/mz6TLdc.gif">
 
-        <h3>How It Works</h3>
-        <p>
-            The platform will allow users to purchase points (robucks) for the
-            activity they are interested in registering for with the use of their credit card. This purchase of points
-            will act as an electronic wallet that will fund the events for which the person wishes to sign up for.
-        </p>
-        <img align="center" src="https://blog.advids.co/wp-content/uploads//2017/03/Mobile-Wallet-video.gif">
+    <br><br><h2>How It Works</h2>
+    <p style="text-align:justify; text-justify: inter-word;">
+        The platform will allow users to purchase points (Robucks) for the
+        activity they are interested in registering for with the use of their credit card. This purchase of points
+        will act as an electronic wallet that will fund the events for which the person wishes to sign up for.
+    </p>
+    <img align="center" src="https://blog.advids.co/wp-content/uploads//2017/03/Mobile-Wallet-video.gif">
 
-        <div>&nbsp;</div>
+    <p style="text-align:justify; text-justify: inter-word;">Events are mapped geologically with Google Maps. First the user must press the "Find Events" button
+        at the top to populate all events on the map. Once populated, click on any of the markers to display the details.
+    </p><br>
 
-        <p>The users can view more information about the event organizers as well as the activities themselves by hovering
-            over them, view their payment information when registering for an event, and browse the map to view events
-            nearby.
-        </p>
+    <img align="center" src="https://media.discordapp.net/attachments/804412711239942144/837804227199631370/vxt0xqEkzk.gif"  width="700px">
+    <br><br>
+     <p style="text-align:justify; text-justify: inter-word;">Once you find an event that interests you, click on the event listed below to register for it. You'll receive a confirmation
+         message.
+    </p>
+    <br>
 
-      <p>If the user doesn't feel like creating an account, that's completely fine as well! Those who want to simply browse events
-            but not register may click the 'Explore Events' tab in the navigation bar.
-            </p>
+    <img align="center" src="https://media.discordapp.net/attachments/804412711239942144/837804281801080934/KyIGIShxfU.gif">
 
-<div>&nbsp;</div><div>&nbsp;</div>
- <h4>Developed by</h4>
-        <a href="https://www.linkedin.com/in/kennyqnguyen/"><img src="https://media-exp1.licdn.com/dms/image/C5603AQH0NT6qIZkGOQ/profile-displayphoto-shrink_800_800/0/1567788360817?e=1625097600&v=beta&t=AzsTNTpQYZ-M02qUxGT7_EjdYQUtVRVKmuCe6eTlmUM" class="rounded-circle" alt="Cinque Terre" width="200"></a>
-        <a href="https://www.linkedin.com/in/sam-vuong/"><img src="https://media-exp1.licdn.com/dms/image/C5603AQENdDa8UjLwvw/profile-displayphoto-shrink_800_800/0/1619497694883?e=1625097600&v=beta&t=Ll5ymBH4o-08GNPT107us7Z33B0gMrP-L4mWIQMLZpI" class="rounded-circle" alt="Cinque Terre" width="200"></a>
-        <a href="https://www.linkedin.com/in/michaeldeely/"><img src="https://media-exp1.licdn.com/dms/image/C5603AQF1jqmpcPDvAw/profile-displayphoto-shrink_400_400/0/1618955500553?e=1624492800&v=beta&t=BEF2dPkeeS2Kk4VLeS2XrBSNgUcRaeFwJ79HVPYXY3E" class="rounded-circle" alt="Cinque Terre" width="200"></a>
-        <a href="https://www.linkedin.com/in/ajiang32/"><img src="https://media-exp1.licdn.com/dms/image/C5603AQGT1ZUyIgEM-g/profile-displayphoto-shrink_400_400/0/1568702508453?e=1624492800&v=beta&t=6pV-6d_8m5FdLHhd4Fg1RQAZ89XA3MIkDjtnprLRCig" class="rounded-circle" alt="Cinque Terre" width="200"></a>
-    </div>
+    <br><br>
+    <p style="text-align:justify; text-justify: inter-word;">If the user doesn't feel like creating an account, that's completely fine as well! Those who want to simply browse events
+        but not register may click the 'Explore Events' tab in the navigation bar.
+    </p>
+    <br>
+    <img align="center" src="https://media.discordapp.net/attachments/634274345660710944/837807207701151824/0GFnIQ8Gr1.gif" width="300px">
 </div>
-
-</body>
-</html>
-
+<div style="background-color: #f5f5f5;">
+    <br><h2 class="mb-3" style="text-align: center">Developed By</h2>
+     <div class="devs" style="text-align: center">
+        <a href="https://www.linkedin.com/in/kennyqnguyen/" style="padding: 0px 20px;"><img src="https://media-exp1.licdn.com/dms/image/C5603AQH0NT6qIZkGOQ/profile-displayphoto-shrink_800_800/0/1567788360817?e=1625097600&v=beta&t=AzsTNTpQYZ-M02qUxGT7_EjdYQUtVRVKmuCe6eTlmUM" class="rounded-circle" alt="Cinque Terre" width="200"></a>
+        <a href="https://www.linkedin.com/in/sam-vuong/" style="padding: 0px 20px;"><img src="https://media-exp1.licdn.com/dms/image/C5603AQENdDa8UjLwvw/profile-displayphoto-shrink_800_800/0/1619497694883?e=1625097600&v=beta&t=Ll5ymBH4o-08GNPT107us7Z33B0gMrP-L4mWIQMLZpI" class="rounded-circle" alt="Cinque Terre" width="200"></a>
+        <a href="https://www.linkedin.com/in/michaeldeely/" style="padding: 0px 20px;"><img src="https://media-exp1.licdn.com/dms/image/C5603AQF1jqmpcPDvAw/profile-displayphoto-shrink_400_400/0/1618955500553?e=1624492800&v=beta&t=BEF2dPkeeS2Kk4VLeS2XrBSNgUcRaeFwJ79HVPYXY3E" class="rounded-circle" alt="Cinque Terre" width="200"></a>
+        <a href="https://www.linkedin.com/in/ajiang32/" style="padding: 0px 20px;"><img src="https://media-exp1.licdn.com/dms/image/C5603AQGT1ZUyIgEM-g/profile-displayphoto-shrink_400_400/0/1568702508453?e=1624492800&v=beta&t=6pV-6d_8m5FdLHhd4Fg1RQAZ89XA3MIkDjtnprLRCig" class="rounded-circle" alt="Cinque Terre" width="200"></a>
+    </div>
+    <br>
+</div>
 {% endblock content %}

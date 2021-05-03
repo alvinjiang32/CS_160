@@ -1,7 +1,8 @@
 {% extends "meetup/base.html" %}
 {% block content %}
+    <br>
     <article class="container text-center">
-        <div class="card border border-info rounded">
+        <div class="card border border-warning rounded">
             <div class="card-header">
                 <h3>"{{ object.name }}" Details</h3>
             </div>
@@ -10,6 +11,10 @@
                     <tr>
                         <th scope="row">Name:</th>
                         <td scope="row">{{ object.name }}</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Date:</th>
+                        <td scope="row">{{ object.date|date:"F d, Y" }}</td>
                     </tr>
                     <tr>
                         <th scope="row">Description:</th>
@@ -43,8 +48,6 @@
                     </tr>
                 </tbody>
               </table>
-
-            <small class="text-muted">Date of Event: {{ object.date|date:"F d, Y" }}</small>
         </div>
         <div class="mt-4">
             {% if object.user == user %}
@@ -52,5 +55,6 @@
                 <a class="btn btn-outline-danger btm-sm" href="{% url 'event-delete' object.id %}">Delete Event</a>
             {% endif %}
         </div>
+        <br>
     </article>
 {% endblock content %}

@@ -17,15 +17,18 @@
 {% endblock header_scripts %}
 
 {% block content %}
-	<center><h2>Explore Events</h2></center><br>
+	<br><center><h1>Explore Events</h1></center><br>
 	<div id="map"></div>
-	<form method="post">
-		{% csrf_token %}
-		{{ form|crispy }}
-		{% if user|has_group:"Citizen" or not user.is_authenticated %}
-			<button class="btn btn-outline-info" type="submit" onclick="return alertPayment()">Register For Event</button>
-		{% endif %}
-	</form>
+	<div class="container">
+		<form method="post">
+			{% csrf_token %}
+			{{ form|crispy }}
+			{% if user|has_group:"Citizen" or not user.is_authenticated %}
+				<button class="btn btn-warning" type="submit" onclick="return alertPayment()">Register For Event</button>
+			{% endif %}
+		</form>
+		<br>
+	</div>
 	<!-- Div element for Google Map -->
 	<div id="floating-panel">
 		<input id="address" type="textbox" value="Enter location" />

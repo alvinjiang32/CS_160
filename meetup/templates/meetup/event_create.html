@@ -7,15 +7,16 @@
 {% endblock header_scripts %}
 
 {% block content %}
-    <div class="content-section">
-        <legend class="border-bottom text-center">Event Form</legend>
+	<br>
+	<div class="content-section">
+        <center><h1>Event Form</h1></center>
 		<div id="map" class="mt-4"></div>
 		<div class="container">
 			<small><p style="text-align:left mb-5 mt">* = required field</p></small>
 			<form method="post">
 				{% csrf_token %}
 				{{ form|crispy }}
-				<button class="btn btn-outline-info" type="submit">Submit Event</button>
+				<button class="btn btn-warning" type="submit">Submit Event</button>
 			</form>
 		</div>
     </div>
@@ -24,6 +25,7 @@
 		<input id="address" type="textbox" value="Enter location" />
 		<input id="submit" type="button" value="Use location" />
 	</div>
+	<br>
 {% endblock content %}
 
 {% block footer_scripts %}
@@ -43,4 +45,5 @@
 		//console.log(loc);
 		loc.readOnly = true;
 	</script>
+
 {% endblock footer_scripts %}
