@@ -410,5 +410,5 @@ def send_coords(request):
                                                     'activity_type',
                                                     'description',
                                                     'contact_info',
-                                                    'attendees'))
+                                                    'attendees', 'id'))
     return JsonResponse(data, safe=False)

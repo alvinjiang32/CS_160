@@ -1,10 +1,10 @@
-var idToPrice = new Map(); // global variable mapping event id to price
+//var allMarkers = [];
 
 // Initialize and add the map
 function initMap() {
 	var url = window.location.href.replace(/\/$/, '');
   const lastSeg = url.substring(url.lastIndexOf('/') + 1);
-  //console.log(lastSeg);
+  console.log(lastSeg);
   // The location of SJSU
   const sjsu = { lat: 37.335, lng: -121.881 };
   // The map, centered at SJSU
@@ -139,6 +139,7 @@ function geocodeAndFind(geocoder, resultsMap) {
 		  dataType: 'json',
 		  success: function (data) {
 			  if (data) {
+				  let idToPrice = new Map();
 				  var stringified = JSON.stringify(data);
 				  //console.log(stringified);
 				  const res = JSON.parse(stringified);
@@ -189,7 +190,7 @@ function geocodeAndFind(geocoder, resultsMap) {
 					  //const res = JSON.parse(obj);
 						//console.log(res);
 				  //}
-				  //console.log(idToPrice);
+				  console.log(idToPrice);
 			  } 
 		  } 
 	  });

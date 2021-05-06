@@ -1,10 +1,10 @@
-//var allMarkers = [];
+var idToPrice = new Map(); // global variable mapping event id to price
 
 // Initialize and add the map
 function initMap() {
 	var url = window.location.href.replace(/\/$/, '');
   const lastSeg = url.substring(url.lastIndexOf('/') + 1);
-  console.log(lastSeg);
+  //console.log(lastSeg);
   // The location of SJSU
   const sjsu = { lat: 37.335, lng: -121.881 };
   // The map, centered at SJSU
@@ -144,6 +144,8 @@ function geocodeAndFind(geocoder, resultsMap) {
 				  const res = JSON.parse(stringified);
 				  Object.entries(data).forEach((entry) => {
 					//console.log(entry);
+					const eventId = entry[1][12];
+					//console.log(eventId);
 					const eventName = entry[1][1];
 					//console.log(eventName);
 					const eventOwner = entry[1][2];
@@ -151,6 +153,7 @@ function geocodeAndFind(geocoder, resultsMap) {
 					const eventDate = entry[1][3];
 					//console.log(eventDate);
 					const eventPrice = entry[1][4];
+					idToPrice.set(eventId, eventPrice);
 					//console.log(eventPrice);
 					const eventMaxAge = entry[1][5];
 					//console.log(eventMaxAge);
@@ -186,6 +189,7 @@ function geocodeAndFind(geocoder, resultsMap) {
 					  //const res = JSON.parse(obj);
 						//console.log(res);
 				  //}
+				  //console.log(idToPrice);
 			  } 
 		  } 
 	  });
