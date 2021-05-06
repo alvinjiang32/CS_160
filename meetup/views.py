@@ -298,6 +298,10 @@ def events(request):
                         user_wallet.balance -= event.price
                         user_wallet.save()
                         people = event.attendees.all()
+                        organizer = event.user
+                        organizer_wallet = Wallet.objects.filter(user=organizer).first()
+                        organizer_wallet.balance += event.price
+                        organizer_wallet.save()
                         event.attendees.set(people)
                         event.attendees.add(current)
                         messages.success(request, "Registered for event!")
