@@ -10,6 +10,10 @@
 	<br>
 	<div class="content-section">
         <center><h1>Event Form</h1></center>
+		<div id="floating-panel" class="mt-4">
+			<input id="address" type="textbox" value="Enter location" />
+			<input id="submit" type="button" value="Use location" />
+		</div>
 		<div id="map" class="mt-4"></div>
 		<div class="container">
 			<small><p style="text-align:left mb-5 mt">* = required field</p></small>
@@ -20,12 +24,6 @@
 			</form>
 		</div>
     </div>
-	<!-- Div element for Google Map -->
-	<div id="floating-panel" class="mt-4">
-		<input id="address" type="textbox" value="Enter location" />
-		<input id="submit" type="button" value="Use location" />
-	</div>
-	<br>
 {% endblock content %}
 
 {% block footer_scripts %}

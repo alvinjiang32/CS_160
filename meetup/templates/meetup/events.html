@@ -18,6 +18,10 @@
 
 {% block content %}
 	<br><center><h1>Explore Events</h1></center><br>
+	<div id="floating-panel">
+		<input id="address" type="textbox" value="Enter location" />
+		<input id="search" type="button" value="Find events" />
+	</div>
 	<div id="map"></div>
 	<div class="container">
 		<form method="post">
@@ -28,11 +32,6 @@
 			{% endif %}
 		</form>
 		<br>
-	</div>
-	<!-- Div element for Google Map -->
-	<div id="floating-panel">
-		<input id="address" type="textbox" value="Enter location" />
-		<input id="search" type="button" value="Find events" />
 	</div>
 {% endblock content %}
 

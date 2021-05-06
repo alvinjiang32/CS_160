@@ -40,6 +40,8 @@ nav li a:hover {
   font-family: "Roboto", "sans-serif";
   line-height: 30px;
   padding-left: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Chrome, Safari, Edge, Opera */

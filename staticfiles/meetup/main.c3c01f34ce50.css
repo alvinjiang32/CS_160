@@ -33,13 +33,17 @@ nav li a:hover {
 
 #floating-panel {
   position: static;
+  top: 160px;
   z-index: 5;
   background-color: #fff;
   padding: 5px;
+  border: 1px solid #999;
   text-align: center;
   font-family: "Roboto", "sans-serif";
   line-height: 30px;
   padding-left: 10px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 /* Chrome, Safari, Edge, Opera */
